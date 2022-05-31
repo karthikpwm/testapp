@@ -4,6 +4,7 @@ import { useQuasar } from 'quasar'
 // import { ref } from 'vue'
 import { useUserStore } from '../store/user'
 import { useRoute, useRouter } from 'vue-router'
+import { api } from '../boot/axios';
 
 export default {
   setup () {
@@ -14,17 +15,24 @@ export default {
     const store = useUserStore()
     const {user} = storeToRefs( store )
     const onSubmit = () => {
-        // if (this.name == null) {
-          $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: 'You need to accept the license and terms first'
-          })
+         if (user.value.name === null) {
+          // $q.notify({
+          //   color: 'red-5',
+          //   textColor: 'white',
+          //   icon: 'warning',
+          //   message: 'You need to accept the license and terms first'
+          // })
 
-            // router.push('/'); 
+              
 
+       }
+      else {
+
+        api.post(`analytic/insertcandidate`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile})
+              console.log('ff',user.value.name)
+              router.push('/');
       }
+    }
     return {
       user,
       onSubmit,
@@ -65,7 +73,7 @@ export default {
 
       <q-input
         filled
-        type= "name"
+        type= "text"
         v-model="user.position"
         label="Position"
         lazy-rules
