@@ -4,12 +4,13 @@ import {useUserStore} from "../store/user"
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
-
+import moment from "moment";
+import "moment-duration-format";
 
 export default {
   data() {
     return {
-      countdown: 300, // 5min
+      countdown: 1200, // 5min
     };
   },
   setup () {
@@ -72,10 +73,11 @@ export default {
         // quwstion_id, uswr_id, uuid, create date time, ans
         // // 
         // user ans -> mysql -> 9/10
+        console.log(userAnswers.value)
         router.push('/result');
         $q.loading.hide()
 
-          //console.log(userAnswers.value)
+          
       },
       
   
@@ -93,14 +95,23 @@ alert("radio selected");
   },
       computed : {
     formatedCountdown() {
-      return this.countdown;
+      const sec = parseInt(this.countdown, 10); // convert value to number if it's string
+    let hours   = Math.floor(sec / 3600); // get hours
+    let minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
+    let seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
+    // add 0 if value < 10; Example: 2 => 02
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return minutes+':'+seconds;
+      
     },
   },
   
 }
 </script>
 <template>
-<div>the countdown starts -- {{formatedCountdown}}</div>
+<div class="col q-pa-md text-h6 flex text-align: center"> Time Left : {{formatedCountdown}}</div>
 <div class="q-pa-md">
   <!-- <b-card-text>
       Question No.{{currentQuestion + 1}} of {{questions.length}}
@@ -112,7 +123,7 @@ alert("radio selected");
       animated
       control-color="primary"
       class="rounded-borders"
-      height="660px"
+      height="600px"
     >
     <q-carousel-slide v-for="(question) in questions" :key="question.question_id"  :name="question.question_id" class="column no-wrap" >
 
@@ -139,7 +150,7 @@ alert("radio selected");
         <q-btn label="Submit" type="submit" color="primary"/>
       </div> -->
     </q-form>
-    <q-card v-if="submitResult.length > 0" flat bordered class="q-mt-md bg-grey-2">
+    <q-card v-if="submitResult.length > 0" flat bordered class="q-mt-md bg-grey-2" >
      
       <q-card-section class="row q-gutter-sm items-center">
         <div
@@ -155,14 +166,14 @@ alert("radio selected");
 
     
 </q-carousel>
-<div class="row justify-center">
+<div class="row justify-center" style="background-color:white">
       <q-btn-toggle
         glossy
         v-model="slide"
         :options="slideOption"
       />
-    </div>
-    <div><q-btn label="Finish" @click="finish()" color="primary"/></div>
+    </div >
+    <div style="background-color:white" ><q-btn label="Finish" @click="finish()" color="primary"/></div>
 </div>
 </template>
 

@@ -1,33 +1,37 @@
  <template>
-  <div class="q-pa-md row items-start q-gutter-md">
+  <div class="q-pa-sm row items-start q-gutter-md">
     <div class="fixed-center">
     <q-card class="my-card-align=“center”" flat bordered>
       <q-img
-        src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
+        src=""
+        img-alt="Image"
+        img-top
+        style="max-width: 4rem;"
+        class="mb-2"
       />
 
-      <q-card-section>
-        <div class="text-overline text-orange-9">Overline</div>
-        <div class="text-h5 q-mt-sm q-mb-xs-fixed-center">Title</div>
-        <div class="text-caption text-grey-fixed-center">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      <q-card-section >
+        <div class="text-overline text-orange-9"></div>
+        <div class="text-h7 q-mt-sm q-mb-xs">Note</div>
+        <div class="text-h6 text-grey-fixed-center">
+         You have only 20 minutes for attending 10 aptitude questions. Click start test to begin your test.
         </div>
       </q-card-section>
 
       <q-card-actions>
-        <q-btn flat color="dark" label="Share" />
-        <q-btn flat color="primary" label="Book" />
+        <q-btn flat color="dark" label="" />
+        <q-btn class=" " color="primary" label="Start Test" @click="start()" rounded />
 
         <q-space />
 
-        <q-btn
+        <!-- <q-btn
           color="grey"
           round
           flat
           dense
           :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
           @click="expanded = !expanded"
-        />
+        /> -->
       </q-card-actions>
 
       <q-slide-transition>
@@ -45,12 +49,21 @@
 
 <script>
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
   setup () {
+    const route = useRoute()
+  const router = useRouter()
+    const start = () =>{
+      console.log('hhh')
+      router.push('/');
+
+    };
     return {
       expanded: ref(false),
-      lorem: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+      lorem: '',
+      start
     }
   }
 }
@@ -60,4 +73,8 @@ export default {
 .my-card
   width: 100%
   max-width: 350px
+  
+
+.note 
+  background-color : #e0e0e0
 </style>

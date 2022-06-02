@@ -15,7 +15,8 @@ export default {
     const store = useUserStore()
     const {user} = storeToRefs( store )
     const onSubmit = () => {
-         if (user.value.name === null) {
+         if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
+           console.log('nooo')
           // $q.notify({
           //   color: 'red-5',
           //   textColor: 'white',
@@ -30,7 +31,7 @@ export default {
 
         api.post(`analytic/insertcandidate`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile})
               console.log('ff',user.value.name)
-              router.push('/');
+              router.push('/info');
       }
     }
     return {
@@ -46,8 +47,8 @@ export default {
 </script>
 
 <template>
-<div class="q-page-container" style="padding-top: 106px; padding-left: 518px;">
-  <div class="q-pa-md" style="max-width: 400px">
+<div class="q-page-container" style="padding-top: 106px; padding-left: 700px;">
+  <div class="q-pa-md" style="background-color: white;max-width: 400px">
     <h5>Enter Your Details</h5>
     <q-form
       @submit="onSubmit"
@@ -110,7 +111,7 @@ export default {
       <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
       <div>
-        <q-btn label="Start test" @click="onSubmit()" color="primary"/>
+        <q-btn  class="full-width" label="Submit" @click="onSubmit()" color="primary" rounded/>
         <!-- <q-btn label="Start test" @click="goToHome()" color="primary"/> -->
         <!-- <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
       </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa">
-    <q-layout view="lHh lpr lFf" container style="height: 900px"   class="shadow-2 rounded-borders">
+    <q-layout view="lHh lpr lFf" container style="background-color:#f2f2f2;height: 900px"    class="shadow-2 rounded-borders">
       <q-header elevated>
         <q-toolbar>
           <q-btn flat round dense icon="menu" class="q-mr-sm" />
@@ -22,8 +22,10 @@
         <!-- </q-tabs> -->
       </q-header>
 
-      <q-page-container>
+      <q-page-container >
+        
         <router-view/>
+        
       </q-page-container>
     </q-layout>
   </div>

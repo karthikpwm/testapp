@@ -2,82 +2,99 @@
 import { useQuasar } from 'quasar'
 import { ref } from 'vue'
 
+
 export default {
-  setup () {
-    const $q = useQuasar()
-
-    const name = ref(null)
-    const age = ref(null)
-    const accept = ref(false)
-
-    return {
-      name,
-      age,
-      accept,
-
-      onSubmit () {
-        if (accept.value !== true) {
-          $q.notify({
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: 'You need to accept the license and terms first'
-          })
-        }
-        else {
-          $q.notify({
-            color: 'green-4',
-            textColor: 'white',
-            icon: 'cloud_done',
-            message: 'Submitted'
-          })
-        }
-      },
-
-      onReset () {
-        name.value = null
-        age.value = null
-        accept.value = false
-      }
-    }
+  
+  data() {
+return {
+  login : {
+    username: '',
+    password: ''
   }
+}
+  },
+  methods: {
+   submitForm () {
+     if (!this.login.username ||!this.login.password){
+       console.log('error')
+     } else {
+       console.log('login')
+     }
+   }
+  },
+  // setup () {
+  //   const $q = useQuasar()
+
+  //   const username = ref(null)
+  //   const password = ref(null)
+  //   const accept = ref(false)
+
+  //   return {
+      
+  //     username,
+  //     password,
+  //     accept,
+
+  //     onSubmit () {
+  //       if (accept.value !== true) {
+  //         $q.notify({
+  //           color: 'red-5',
+  //           textColor: 'white',
+  //           icon: 'warning',
+  //           message: 'You need to accept the license and terms first'
+  //         })
+  //       }
+  //       else {
+  //         $q.notify({
+  //           color: 'green-4',
+  //           textColor: 'white',
+  //           icon: 'cloud_done',
+  //           message: 'Submitted'
+  //         })
+  //       }
+  //     },
+
+  //     onReset () {
+  //       username.value = null
+  //       password.value = null
+  //       accept.value = false
+  //     }
+  //   }
+  // }
 }
 </script>
 
 <template>
 <div class="q-page-container" style="padding-top: 106px; padding-left: 718px;">
-  <div class="q-pa-md" style="max-width: 400px">
-
+  <div class="q-pa-md" style="background-color: white;max-width: 400px">
+<div class="col text-h6 ellipsis flex justify-center"> <h6 class="text-h6 text-uppercase q-my-none">LOGIN FORM </h6> </div>
     <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
+      
+      class="q-gutter-md" @submit.prevent="submitForm"
     >
       <q-input
         filled
-        v-model="name"
+        v-model="login.username"
         label="Username"
         hint="userrname"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        
       />
 
       <q-input
         filled
-        type="number"
-        v-model="age"
+        
+        v-model="login.password"
         label="Password"
-        lazy-rules
-        :rules="[
-          val => val !== null && val !== '' || 'Please type your correct password'
-          // val => val > 0 && val < 100 || 'Please type a real age'
-        ]"
+        hint="password"
+        type="password"
+      
+        
       />
 
-      <q-toggle v-model="accept" label="I accept the license and terms" />
+      <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
       <div>
-        <q-btn label="Login" type="submit" color="primary"/>
+        <q-btn class="full-width" label="Login" type="submit" color="primary" rounded/>
         <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
       </div>
     </q-form>
