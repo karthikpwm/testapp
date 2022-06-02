@@ -4,8 +4,7 @@ import {useUserStore} from "../store/user"
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
-import moment from "moment";
-import "moment-duration-format";
+
 
 export default {
   data() {

@@ -1,24 +1,36 @@
 <script>
 import { useQuasar } from 'quasar'
 import { ref } from 'vue'
+import { api } from '../boot/axios';
+import { useRoute, useRouter } from 'vue-router'
+
 
 
 export default {
   
-  data() {
+  data() { 
+  const route = useRoute()
+  const router = useRouter()
+    
 return {
+  router,
   login : {
     username: '',
     password: ''
-  }
+  },
+  
 }
   },
   methods: {
+    
    submitForm () {
      if (!this.login.username ||!this.login.password){
        console.log('error')
      } else {
+
+        api.post(`user/login`, {email : this.login.username,password : this.login.password})
        console.log('login')
+       this.$router.push('/user');
      }
    }
   },
@@ -61,13 +73,14 @@ return {
   //     }
   //   }
   // }
+  
 }
 </script>
 
 <template>
-<div class="q-page-container" style="padding-top: 106px; padding-left: 718px;">
+<div class="q-page-container justify-content flex" style="padding-top: 106px; padding-left: 518px;">
   <div class="q-pa-md" style="background-color: white;max-width: 400px">
-<div class="col text-h6 ellipsis flex justify-center"> <h6 class="text-h6 text-uppercase q-my-none">LOGIN FORM </h6> </div>
+<div class="col text-h6 ellipsis flex justify-center"> <h6 class="text-h6 text-uppercase q-my-none">LOGIN </h6> </div>
     <q-form
       
       class="q-gutter-md" @submit.prevent="submitForm"

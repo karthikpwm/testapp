@@ -47,9 +47,12 @@ export default {
 </script>
 
 <template>
-<div class="q-page-container" style="padding-top: 106px; padding-left: 700px;">
-  <div class="q-pa-md" style="background-color: white;max-width: 400px">
-    <h5>Enter Your Details</h5>
+<div class="q-page-container justify-content" style="padding-top: 106px; padding-left: 600px;">
+  <div class="q-pa-md justify-content" style="background-color: white;max-width: 400px">
+  <div class="col text-h6 ellipsis flex justify-center">
+    <h5 class="text-h6 text-uppercase q-my-none">Enter Your Details</h5>
+  </div>
+    
     <q-form
       @submit="onSubmit"
       @reset="onReset"
