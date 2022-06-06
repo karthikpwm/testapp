@@ -1,9 +1,11 @@
 <script>
 import { ref, onMounted } from 'vue'
 import {useUserStore} from "../store/user"
+import {useCandidateStore} from "../store/candidate"
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
+import { api } from '../boot/axios';
 
 
 export default {
@@ -16,6 +18,7 @@ export default {
      const $q = useQuasar()
   // $q.loading.hide()
         const store = useUserStore();
+        const candidatestore = useCandidateStore();
        const router = useRouter()
     function hello () {
       return 'gdfgf'
@@ -28,13 +31,14 @@ export default {
       return String.fromCharCode(number+65)
     }
 
-    const {  questions, userAnswers } = storeToRefs(store);
+    const {  questions, userAnswers,token } = storeToRefs(store);
+    const {  testlog_id , candidate_id} = storeToRefs(candidatestore);
     const slideOption = ref([])
     const slide = ref(0)
     onMounted( async () => {
         //$q.loading.show()
 
-      await store.getQuestion()
+      await store.getQuestion(testlog_id.value,candidate_id.value)
       let i = 0;
       slide.value = questions.value[0].question_id
       slideOption.value = questions.value.map((x) => { 
@@ -73,8 +77,22 @@ export default {
         // // 
         // user ans -> mysql -> 9/10
         console.log(userAnswers.value)
-        router.push('/result');
+                api.post(`analytic/answer_test`, {candidate_id : candidate_id.value, testlog_id : testlog_id.value,userAnswers: userAnswers.value},
+        {
+  headers: {
+    Authorization: 'Bearer ' + token.value
+  }
+}).then(res => {
         $q.loading.hide()
+  token.value = ''
+        router.push('/result');
+
+})
+.catch(res => {
+  alert(res.response.data.message || 'server not found')
+})
+
+
 
           
       },
@@ -87,10 +105,12 @@ alert("radio selected");
   },
   mounted() {
         const stopCountdown = setInterval(() => {
-      //console.log("current countdown", this.countdown);
+      console.log("current countdown", this.countdown);
       this.countdown -= 1;
       if (!this.countdown) clearInterval(stopCountdown);
+      if (this.countdown === 0) {  this.finish()}
     }, 1000);
+    
   },
       computed : {
     formatedCountdown() {
@@ -172,7 +192,7 @@ alert("radio selected");
         :options="slideOption"
       />
     </div >
-    <div style="background-color:white" ><q-btn label="Finish" @click="finish()" color="primary"/></div>
+    <div class="q-pa-md row justify-center" style="background-color:white" ><q-btn label="Finish" @click="finish()" color="primary"/></div>
 </div>
 </template>
 

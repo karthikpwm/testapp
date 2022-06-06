@@ -1,6 +1,9 @@
 <script>
 import { useQuasar } from 'quasar'
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '../store/user'
+
 import { api } from '../boot/axios';
 import { useRoute, useRouter } from 'vue-router'
 
@@ -8,31 +11,39 @@ import { useRoute, useRouter } from 'vue-router'
 
 export default {
   
-  data() { 
-  const route = useRoute()
+  setup () { 
+        const store = useUserStore()
+    const {token} = storeToRefs( store )
+
   const router = useRouter()
-    
-return {
-  router,
-  login : {
+  const login = ref({
     username: '',
     password: ''
-  },
-  
-}
-  },
-  methods: {
-    
-   submitForm () {
-     if (!this.login.username ||!this.login.password){
+  })
+
+  const submitForm =  () => {
+     if (!login.value.username ||!login.value.password){
        console.log('error')
      } else {
 
-        api.post(`user/login`, {email : this.login.username,password : this.login.password})
-       console.log('login')
-       this.$router.push('/user');
+        api
+          .post(`user/login`, {email : login.value.username,password : login.value.password})
+          .then(async (res) => {
+            
+token.value = res.data.token
+             
+             router.push('/user');
+          })
+          .catch((res) => {
+            alert(res.response.data.message || 'server not fould')
+          })
      }
    }
+
+return {
+  login,
+  submitForm
+}
   },
   // setup () {
   //   const $q = useQuasar()

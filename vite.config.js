@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
-
+{ import('vite').UserConfig }
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -9,9 +9,13 @@ export default defineConfig({
       template: { transformAssetUrls }
     }),
 
+
     quasar({
       sassVariables: 'src/quasar-variables.sass'
     })
-  ]
+  ],
+  server: {
+    host: '0.0.0.0'
+  }
 })
 

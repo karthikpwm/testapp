@@ -5,15 +5,16 @@ import User from "../components/userinfo.vue";
 import result from "../components/result.vue";
 import info from "../components/info.vue";
 import question from "../components/question.vue";
+import cresult from "../components/candidateresults.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: Home,
   },
   {
-    path: "/login",
+    path: "/",
     name: "Login",
     component: Login,
   },
@@ -36,6 +37,11 @@ const routes = [
     path: "/question",
     name: "question",
     component: question,
+  },
+  {
+    path: "/cresult",
+    name: "cresult",
+    component: cresult,
   },
 ];
 

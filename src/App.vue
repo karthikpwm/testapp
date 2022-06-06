@@ -12,7 +12,7 @@
           <div class="q-mr-sm"> 
             <!-- {{formatedCountdown}}  -->
           </div>
-          <q-btn flat round dense icon="logout" />
+          <q-btn flat round dense icon="logout" @click="logout()" />
         </q-toolbar>
 
         <!-- <q-tabs v-model="tab"> -->
@@ -31,47 +31,38 @@
   </div>
 </template>
 <script>
-
-
+import { storeToRefs } from 'pinia';
+import { useUserStore } from './store/user'
+import { useRoute, useRouter } from 'vue-router'
 export default ({
   data() {
     return {
+      
       countdown: 300, // 5min
     };
   },
   
   setup() {
+    const store = useUserStore()
+    const {token} = storeToRefs( store )
+    const router = useRouter()
+    const logout = () => {
+        //token.value = ''
+        // router.push('/login');
+        // console.log('hhh')
+      }
     return {
+      
       countDown : 30,
       timer:null,
+      logout
+      
     }
-    
+   
   },
-  mounted() {
-        const stopCountdown = setInterval(() => {
-      //console.log("current countdown", this.countdown);
-      this.countdown -= 1;
-      if (!this.countdown) clearInterval(stopCountdown);
-    }, 1000);
-  },
-  computed : {
-    formatedCountdown() {
-      return this.countdown;
-    },
-  },
-  methods : {
-    countDownTimer : function() {
-                if(this.countDown > 0) {
-                    this.timer = setTimeout(() => {
-                        this.countDown -= 1
-                        this.countDownTimer()
-                    }, 1000)
-                }
-                else{
-                    this.handleAnswerClick(false)
-                }
-    }   
-  }
+
+  
+  
 })
 </script>
 

@@ -1,6 +1,46 @@
+<script>
+import { storeToRefs } from 'pinia'
+import { useQuasar } from 'quasar'
+// import { ref } from 'vue'
+import { useUserStore } from '../store/user'
+import { useCandidateStore } from '../store/candidate'
+import { useRoute, useRouter } from 'vue-router'
+import { api } from '../boot/axios';
+
+export default {
+  setup () { 
+  const router = useRouter()
+  // const form = ref(null);
+    const store = useUserStore()
+    const store_candiate = useCandidateStore()
+    const { token} = storeToRefs( store )
+    const { candidate_id,testlog_id } = storeToRefs( store_candiate )
+    const start = () => {
+        api.post(`analytic/start_test`, {candidate_id : candidate_id.value},
+        {
+  headers: {
+    Authorization: 'Bearer ' + token.value
+  }
+}).then(res => {testlog_id.value = res.data.testlog_id
+              router.push('/home');
+
+})
+.catch(res => {
+  alert(res.response.data.message || 'server not found')
+})
+      
+    }
+    return {
+      start,
+    }
+  },
+}
+</script>
+
+
  <template>
-  <div class="q-pa-sm row items-start q-gutter-md">
-    <div class="fixed-center">
+  <div class="q-pa-sm window-height window-width row justify-center items-center">
+    <div class="row justify-center">
     <q-card class="my-card-align=“center”" flat bordered>
       <q-img
         src=""
@@ -13,7 +53,7 @@
       <q-card-section >
         <div class="text-overline text-orange-9"></div>
         <div class="text-h7 q-mt-sm q-mb-xs">Note</div>
-        <div class="text-h6 text-grey-fixed-center">
+        <div class="text-h6 text-center self-center">
          You have only 20 minutes for attending 10 aptitude questions. Click start test to begin your test.
         </div>
       </q-card-section>
@@ -46,28 +86,6 @@
   </div>
   </div>
 </template>
-
-<script>
-import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-
-export default {
-  setup () {
-    const route = useRoute()
-  const router = useRouter()
-    const start = () =>{
-      console.log('hhh')
-      router.push('/');
-
-    };
-    return {
-      expanded: ref(false),
-      lorem: '',
-      start
-    }
-  }
-}
-</script>
 
 <style lang="sass" scoped>
 .my-card

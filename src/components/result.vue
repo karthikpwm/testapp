@@ -1,9 +1,9 @@
 <template>
-<div class="page-container" style="padding-top: 306px; padding-left: 618px;">
+<div class="page-container window-height  row justify-center items-center" >
   <div class="q-pa-lg row items-start q-gutter-md" >
-  <q-card dark bordered class="bg-grey-9 my-card">
+  <q-card dark bordered class="child">
       <q-card-section>
-        <div class="text-h6">Thans for attending the test, Your mark has been sent to your E-mail</div>
+        <div class="text-h6" >Thans for attending the test, Your mark has been sent to your E-mail</div>
         
       </q-card-section>
 
@@ -27,6 +27,9 @@ export default {
 </script>
 <style lang="sass" scoped>
 .my-card
-  width: 200%
+  width: 100%
   max-width: 592px
+
+
+
 </style>
