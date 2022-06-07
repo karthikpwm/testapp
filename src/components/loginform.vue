@@ -89,9 +89,9 @@ return {
 </script>
 
 <template>
-<div class="q-page-container justify-content flex" style="padding-top: 106px; padding-left: 518px;">
-  <div class="q-pa-md" style="background-color: white;max-width: 400px">
-<div class="col text-h6 ellipsis flex justify-center"> <h6 class="text-h6 text-uppercase q-my-none">LOGIN </h6> </div>
+<div class="page-container window-height row justify-center items-center">
+  <div class="row justify-center" style="background-color: white;max-width: 500px">
+<div class="col-12 text-center self-center"> <h6 class="text-h6 text-uppercase q-my-none">LOGIN </h6> </div>
     <q-form
       
       class="q-gutter-md" @submit.prevent="submitForm"
