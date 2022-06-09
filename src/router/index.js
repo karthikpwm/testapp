@@ -6,6 +6,8 @@ import result from "../components/result.vue";
 import info from "../components/info.vue";
 import question from "../components/question.vue";
 import cresult from "../components/candidateresults.vue";
+import calc from "../components/calculator.vue"
+import printcanquestions from "../components/printcandidatequestions.vue"
 
 const routes = [
   {
@@ -42,6 +44,17 @@ const routes = [
     path: "/cresult",
     name: "cresult",
     component: cresult,
+  },
+  {
+    path: "/calc",
+    name: "calc",
+    component: calc,
+  },
+  {
+    path: "/printcanquestions",
+    name: "printcanquestions",
+    component: printcanquestions,
+    props:true
   },
 ];
 

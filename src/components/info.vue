@@ -39,7 +39,7 @@ export default {
 
 
  <template>
-  <div class="q-pa-sm window-height window-width row justify-center items-center">
+  <div class="page-container window-height row justify-center items-center">
     <div class="row justify-center">
     <q-card class="my-card-align=“center”" flat bordered>
       <q-img
@@ -54,7 +54,7 @@ export default {
         <div class="text-overline text-orange-9"></div>
         <div class="text-h7 q-mt-sm q-mb-xs">Note</div>
         <div class="text-h6 text-center self-center">
-         You have only 20 minutes for attending 10 aptitude questions. Click start test to begin your test.
+         You have 20 minutes for attending 10 aptitude questions. Click start test to begin your test.
         </div>
       </q-card-section>
 

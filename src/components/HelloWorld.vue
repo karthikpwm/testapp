@@ -6,12 +6,13 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 import { api } from '../boot/axios';
-
+import BaseTimer from "../components/BaseTimer.vue";
 
 export default {
   data() {
     return {
       countdown: 1200, // 5min
+      //downcount
     };
   },
   setup () {
@@ -72,12 +73,14 @@ export default {
         submitResult.value = data
       },
       finish(){
-        $q.loading.show()
+        //$q.loading.show()
         // quwstion_id, uswr_id, uuid, create date time, ans
         // // 
         // user ans -> mysql -> 9/10
-        console.log(userAnswers.value)
-                api.post(`analytic/answer_test`, {candidate_id : candidate_id.value, testlog_id : testlog_id.value,userAnswers: userAnswers.value},
+        console.log(userAnswers.value,)
+      
+        console.log('jjj',this.downcount)
+           api.post(`analytic/answer_test`, {candidate_id : candidate_id.value, testlog_id : testlog_id.value,userAnswers: userAnswers.value, countdown : this.countdown},
         {
   headers: {
     Authorization: 'Bearer ' + token.value
@@ -93,9 +96,15 @@ export default {
 })
 
 
-
           
       },
+      
+      gotoContact() {
+        let windowFeatures = "left=200,top=200,width=920,height=520";
+      let route = router.resolve({ path: "/calc" });
+      console.log(windowFeatures,'kkk')
+      window.open(route.href, "mozillaWindow", windowFeatures);
+    },
       
   
      myFunction() {
@@ -103,15 +112,18 @@ alert("radio selected");
 }
     }
   },
+  
   mounted() {
+    //  const downcount = this.formatedCountdown()
         const stopCountdown = setInterval(() => {
-      console.log("current countdown", this.countdown);
+      //console.log("current countdown", this.countdown);
       this.countdown -= 1;
       if (!this.countdown) clearInterval(stopCountdown);
       if (this.countdown === 0) {  this.finish()}
     }, 1000);
-    
+   
   },
+   
       computed : {
     formatedCountdown() {
       const sec = parseInt(this.countdown, 10); // convert value to number if it's string
@@ -126,12 +138,22 @@ alert("radio selected");
       
     },
   },
+  components: {
+    BaseTimer,
+  },
   
 }
 </script>
 <template>
-<div class="col q-pa-md text-h6 flex text-align: center"> Time Left : {{formatedCountdown}}</div>
-<div class="q-pa-md">
+<div class="header">
+      <h6></h6>
+    </div>
+
+    <BaseTimer class="base-timer" />
+    <h8>press calculator button to use calculator</h8><br>
+    <q-btn @click="gotoContact()" color="primary" label="calculator"/>
+<!-- <div class="col q-pa-md text-h6 flex text-align: center"> Time Left : {{formatedCountdown}}</div> -->
+<div class="q-pa-sm" >
   <!-- <b-card-text>
       Question No.{{currentQuestion + 1}} of {{questions.length}}
     </b-card-text> -->
@@ -201,4 +223,21 @@ alert("radio selected");
   width: 500%
   height: 500%
   max-width: 550px
+
+
+</style>
+<style scoped>
+.header {
+  position: absolute;
+  top: 0;
+}
+.base-timer {
+  margin-top: auto;
+  margin-left: 1px;
+}
+</style>
+<style scoped>
+.q-pa-sm {
+  padding: 11px 295px
+}
 </style>

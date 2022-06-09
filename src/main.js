@@ -4,6 +4,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { Quasar, Loading } from 'quasar'
 import router from './router'
+import store from "./store";
 
 // Import icon libraries
 import '@quasar/extras/material-icons/material-icons.css'
@@ -25,7 +26,7 @@ myApp.use(Quasar, {
   config: {
     loading: { /* look at QuasarConfOptions from the API card */ }
   }
-})
+}).use(store)
   .use(router)
   .use(pinia)
 // Assumes you have a <div id="app"></div> in your index.html

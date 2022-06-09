@@ -35,7 +35,7 @@ token.value = res.data.token
              router.push('/user');
           })
           .catch((res) => {
-            alert(res.response.data.message || 'server not fould')
+            alert(res.response.data.message || 'server not found')
           })
      }
    }

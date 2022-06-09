@@ -20,7 +20,7 @@
 export default {
   setup () {
     return {
-      lorem: '    Prosperity Wealth Management.'
+      lorem: ''
     }
   }
 }

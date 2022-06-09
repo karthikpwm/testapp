@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa">
-    <q-layout view="lHh lpr lFf" container style="background-color:#f2f2f2;height: 900px"    class="shadow-2 rounded-borders">
+    <q-layout view="lHh lpr lFf" container style="background-color:#f2f2f2;height: 969px"    class="shadow-2 rounded-borders">
       <q-header elevated>
         <q-toolbar>
           <q-btn flat round dense icon="menu" class="q-mr-sm" />
@@ -8,7 +8,7 @@
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
           </q-avatar>
 
-          <q-toolbar-title>PWM Aptitude Test</q-toolbar-title>
+          <q-toolbar-title>Common Aptitude Test</q-toolbar-title>
           <div class="q-mr-sm"> 
             <!-- {{formatedCountdown}}  -->
           </div>
