@@ -150,8 +150,10 @@ alert("radio selected");
     </div>
 
     <BaseTimer class="base-timer" />
-    <h8>press calculator button to use calculator</h8><br>
+    <h8 class=" row justify-center" style="font-weight:bold">PRESS CALCULATOR BUTTON TO USE CALLCULATOR</h8><br>
+    <div class=" row justify-center">
     <q-btn @click="gotoContact()" color="primary" label="calculator"/>
+    </div>
 <!-- <div class="col q-pa-md text-h6 flex text-align: center"> Time Left : {{formatedCountdown}}</div> -->
 <div class="q-pa-sm" >
   <!-- <b-card-text>
@@ -164,7 +166,7 @@ alert("radio selected");
       animated
       control-color="primary"
       class="rounded-borders"
-      height="600px"
+      height="560px"
     >
     <q-carousel-slide v-for="(question) in questions" :key="question.question_id"  :name="question.question_id" class="column no-wrap" >
 
@@ -207,14 +209,14 @@ alert("radio selected");
 
     
 </q-carousel>
-<div class="row justify-center" style="background-color:white">
+<div class="q-pa-sm row justify-center" style="background-color:white">
       <q-btn-toggle
         glossy
         v-model="slide"
         :options="slideOption"
       />
     </div >
-    <div class="q-pa-md row justify-center" style="background-color:white" ><q-btn label="Finish" @click="finish()" color="primary"/></div>
+    <div class="q-px-sm mybutton" style="background-color:white" ><q-btn label="Finish" @click="finish()" color="primary"/></div>
 </div>
 </template>
 
@@ -239,5 +241,13 @@ alert("radio selected");
 <style scoped>
 .q-pa-sm {
   padding: 11px 295px
+}
+.mybutton {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.q-mt-md {
+    margin-top: -7px;
 }
 </style>

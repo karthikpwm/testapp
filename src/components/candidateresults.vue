@@ -1,4 +1,7 @@
 <template>
+<div class="q-pa-sm row justify-center">
+    <q-btn  @click="deletecan()" color="primary" label="delete"/>
+  </div>
   <div class="q-pa-md">
     <q-table
       title="Marks scored by candidate out of 10"
@@ -9,6 +12,7 @@
       @row-click="onRowClick" 
     />
   </div>
+  
 </template>
 
 <script>
@@ -31,6 +35,7 @@ api
           })
 
     })
+   
 
 
   const columns = [
@@ -53,7 +58,13 @@ api
     return {
       columns,
       rows,
-      
+       deletecan() {
+         console.log('working')
+
+         api
+          .post(`analytic/deletecan`)
+      router.go()
+    }
     }
   },
    methods: {

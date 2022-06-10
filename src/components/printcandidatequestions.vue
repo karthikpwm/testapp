@@ -1,9 +1,10 @@
 <template>
   <div class="q-pa-md">
-    <div> id is :{{this.id}}</div>
+    <div> {{this.id}}</div>
     <q-table
-      title="questions for candidate"
+      
       :rows="rows"
+      
       :columns="columns"
       row-key="name"
       :rows-per-page-options="[0]"
@@ -32,7 +33,18 @@ api
   let resdata = res.data.data
 
     rows.value = resdata
-  console.log(resdata, rows.value)
+    // resdata.forEach(element => {
+    //   let abc = element.correct
+    //   if(abc === 'correct') {
+    //     element.result = 1
+    //   }
+    //   else {
+    //     element
+    //   }
+    //   console.log(abc)
+      
+    // });
+  console.log(resdata)
           })
 
     })
@@ -42,7 +54,7 @@ api
     {
       name: 'name',
       required: true,
-      label: 'questions',
+      label: 'Questions',
       field : 'question',
       align: 'left',
       
@@ -51,7 +63,7 @@ api
     },
     // { name: 'options', align: 'center', label: 'options', field: 'options', sortable: true },
     // { name: 'answer', label: 'answer', field: 'answer',align: 'left', sortable: true },
-    { name: 'correct', label: 'correct or wrong',align: 'left', field: 'correct' },
+    { name: 'correct', label: 'Marks',align: 'left', field: 'correct' },
     // { name: 'candidate answer', label: 'candidate answer',align: 'left', field: 'candidateanswer' },
     
   ]
