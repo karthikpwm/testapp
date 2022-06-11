@@ -216,7 +216,9 @@ alert("radio selected");
         :options="slideOption"
       />
     </div >
-    <div class="q-px-sm mybutton" style="background-color:white" ><q-btn label="Finish" @click="finish()" color="primary"/></div>
+    
+    <br><br>
+    <div class="q-px-sm mybutton" ><q-btn label="Finish" @click="finish()" color="primary"/></div>
 </div>
 </template>
 

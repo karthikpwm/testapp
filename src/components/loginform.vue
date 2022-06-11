@@ -89,8 +89,9 @@ return {
 </script>
 
 <template>
-<div class="page-container window-height row justify-center items-center">
-  <div class="row justify-center" style="background-color: white;max-width: 500px">
+
+<div class="page-container window-height row justify-center flex items-center ">
+  <div class="img row justify-center" style="background-color: white;max-width: 278px;max-height: 372px; border-radius:25px;"  rounded>
 <div class="col-12 text-center self-center"> <h6 class="text-h6 text-uppercase q-my-none">LOGIN </h6> </div>
     <q-form
       
@@ -100,8 +101,9 @@ return {
         filled
         v-model="login.username"
         label="Username"
-        hint="userrname"
-        
+        hint="email id"
+        label-color="black"
+        debounce="black"
       />
 
       <q-input
@@ -111,7 +113,8 @@ return {
         label="Password"
         hint="password"
         type="password"
-      
+        label-color="black"
+         debounce="black"
         
       />
 
@@ -119,11 +122,32 @@ return {
 
       <div>
         <q-btn class="full-width" label="Login" type="submit" color="primary" rounded/>
-        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+        <q-btn label="Reset" style="" type="reset" color="primary" flat class="q-ml-md" aria-label="bold"  />
       </div>
     </q-form>
 
   </div>
 </div>
 </template>
+<style>
+.img {
+  height: 380px;
+   width: 80%;
+background-image: url("./img/login1.jpg");
+background-size: contain;
+ background-repeat: no-repeat
+ 
+}
+.q-field--filled .q-field__control {
+    padding: 0 12px;
+    background: #99aab8;
+    border-radius: 4px 4px 0 0;
+}
+
+.window-height {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    height: 80vh !important;
+}
+</style>
 
