@@ -51,10 +51,10 @@ const routes = [
     component: calc,
   },
   {
-    path: "/printcanquestions",
+    path: "/printcanquestions/:id",
     name: "printcanquestions",
     component: printcanquestions,
-    props:true
+    props: true
   },
 ];
 

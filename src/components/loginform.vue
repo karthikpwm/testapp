@@ -13,7 +13,7 @@ export default {
   
   setup () { 
         const store = useUserStore()
-    const {token} = storeToRefs( store )
+    const {token, admin} = storeToRefs( store )
 
   const router = useRouter()
   const login = ref({
@@ -31,10 +31,11 @@ export default {
           .then(async (res) => {
             
 token.value = res.data.token
-             
+             admin.value = res.data.user
              router.push('/user');
           })
           .catch((res) => {
+            console.log(res)
             alert(res.response.data.message || 'server not found')
           })
      }

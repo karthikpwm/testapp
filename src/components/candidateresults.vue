@@ -29,10 +29,51 @@ api
           .then(async (res) => {
             
   let resdata = res.data.data
+  // resdata.forEach(element => {
+  //   let pp = 1200
+  //  let ab = pp - element.time
+  //  const timeLeft = ab;
+  //     const minutes = Math.floor(timeLeft / 60);
+  //     let seconds = timeLeft % 60;
 
-    rows.value = resdata
-  console.log(resdata, rows.value)
-          })
+  //     if (seconds < 10) {
+  //       seconds = `0${seconds}`;
+  //     }
+
+  //    let cd = `${minutes}:${seconds}`;
+  //   console.log(cd)
+  // });
+  
+  let qw = 0;
+  resdata = resdata.map(function (val) {
+         
+     const pp = 1200
+     if(val.time === 0)
+     {
+      val.time =1200
+     }       
+     else {
+    val.qw = pp - val.time
+    const timeLeft = val.qw;
+       const minutes = Math.floor(timeLeft / 60);
+       let seconds = timeLeft % 60;
+
+      if (seconds < 10) {
+        seconds = `0${seconds}`;
+      }
+       
+      val.timetaken = `${minutes}:${seconds}`;
+         //console.log('sum',val.timetaken,resdata)
+         rows.value = resdata
+     }
+         })
+         console.log(rows.value)
+    //rows.value = resdata
+
+
+
+
+})
 
     })
    
@@ -49,14 +90,20 @@ api
       sortable: true
     },
     { name: 'marks scored', align: 'center', label: 'marks scored', field: 'totalcorrect', sortable: true },
+    { name: 'time', label: 'time', field: 'timetaken',align: 'left', sortable: true },
     { name: 'date', label: 'date', field: 'date',align: 'left', sortable: true },
     { name: 'email', label: 'email',align: 'left', field: 'email' },
     { name: 'mobile', label: 'mobile',align: 'left', field: 'mobile' },
     
   ]
+
+  const onRowClick = (_, row) => {
+      router.push('/printcanquestions/'+row.candidate_id)
+  }
   
     return {
       columns,
+      onRowClick,
       rows,
        deletecan() {
          console.log('working')
@@ -68,13 +115,7 @@ api
     }
   },
    methods: {
-    onRowClick (evt, row) {
-      let windowFeatures = "left=200,top=200,width=920,height=520";
-      let route = this.$router.resolve({ name: "printcanquestions",params: {id : row.candidate_id} });
-      console.log(windowFeatures,'kkk')
-      window.open(route.href, "mozillaWindow", windowFeatures);
-      console.log('clicked on', row.candidate_id)
-    }
-  }
+
+}
 }
 </script>

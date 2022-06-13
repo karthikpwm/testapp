@@ -8,7 +8,14 @@ export const useUserStore = defineStore("user", () => {
         position: '',
         email: '',
         mobile: '',
+        company_id: ''
+    })
 
+    const admin = ref({
+        name: '',
+        email: '',
+        user_id: '',
+        company_id: ''
     })
     const userAnswers = ref({})
     const questions = ref([])
@@ -43,6 +50,7 @@ export const useUserStore = defineStore("user", () => {
         questions,
         userAnswers,
         token,
+        admin,
         getQuestion,
         insertUser
     }

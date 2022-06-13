@@ -48,9 +48,8 @@ const COLOR_CODES = {
   },
 };
 
-const TIME_LIMIT = 1200;
-
 export default {
+  props: ['TIME_LIMIT', 'isTimeUp', 'timerInterval'],
   data() {
     return {
       timePassed: 0,
@@ -76,12 +75,12 @@ export default {
     },
 
     timeLeft() {
-      return TIME_LIMIT - this.timePassed;
+      return this.TIME_LIMIT - this.timePassed;
     },
 
     timeFraction() {
-      const rawTimeFraction = this.timeLeft / TIME_LIMIT;
-      return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
+      const rawTimeFraction = this.timeLeft / this.TIME_LIMIT;
+      return rawTimeFraction - (1 / this.TIME_LIMIT) * (1 - rawTimeFraction);
     },
 
     remainingPathColor() {
@@ -101,6 +100,9 @@ export default {
     timeLeft(newValue) {
       if (newValue === 0) {
         this.onTimesUp();
+        if(this.isTimeUp) {
+          this.isTimeUp()
+        }
       }
     },
   },
@@ -113,7 +115,11 @@ export default {
     onTimesUp() {
       clearInterval(this.timerInterval);
     },
-
+    stopTimer() {
+      console.log('stopTimer for all')
+      this.onTimesUp();
+      return this.timePassed;
+    },
     startTimer() {
       this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
     },

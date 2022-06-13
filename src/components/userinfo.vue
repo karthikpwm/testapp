@@ -15,8 +15,8 @@ export default {
   // const form = ref(null);
     const store = useUserStore()
     const store_candiate = useCandidateStore()
-    const {user, token} = storeToRefs( store )
-    const { candidate_id } = storeToRefs( store_candiate )
+    const {user, token, admin} = storeToRefs( store )
+    const { candidate_id, company_id } = storeToRefs( store_candiate )
     const onSubmit = () => {
          if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
            console.log('nooo')
@@ -26,19 +26,17 @@ export default {
           //   icon: 'warning',
           //   message: 'You need to accept the license and terms first'
           // })
-
-              
-
        }
       else {
 
-        api.post(`analytic/insertcandidate`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile},
+        api.post(`analytic/insertcandidate`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile, company_id : admin.value.company_id, timelimit:1200},
         {
   headers: {
     Authorization: 'Bearer ' + token.value
   }
 }).then(res => {
               candidate_id.value = res.data.insert_id
+              company_id.value = admin.value.company_id
               router.push('/info');
 
 })

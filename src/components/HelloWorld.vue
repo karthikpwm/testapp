@@ -1,5 +1,5 @@
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import {useUserStore} from "../store/user"
 import {useCandidateStore} from "../store/candidate"
 import { storeToRefs } from 'pinia';
@@ -9,12 +9,6 @@ import { api } from '../boot/axios';
 import BaseTimer from "../components/BaseTimer.vue";
 
 export default {
-  data() {
-    return {
-      countdown: 1200, // 5min
-      //downcount
-    };
-  },
   setup () {
      const $q = useQuasar()
   // $q.loading.hide()
@@ -24,6 +18,9 @@ export default {
     function hello () {
       return 'gdfgf'
     }
+    const refBaseTimer = ref(null)
+    const timelimit = ref(1200);
+    let timePassed = ref(0);
     const submitResult = ref([])
     const numberToChar = (number) => {
       if(number === null) {
@@ -48,39 +45,16 @@ export default {
       })
         $q.loading.hide()
 
+
     })
 
-    return {
-      currentQuestion: 0,
-      slideOption,
-      userAnswers,
-      numberToChar,
-      questions,
-      hello,
-      submitResult,
-      slide,
-        onSubmit (evt) {
-        const formData = new FormData(evt.target)
-        const data = []
+    const finish = () => {
 
-        for (const [ name, value ] of formData.entries()) {
-          data.push({
-            name,
-            value
-          })
-        }
-
-        submitResult.value = data
-      },
-      finish(){
         //$q.loading.show()
         // quwstion_id, uswr_id, uuid, create date time, ans
         // // 
         // user ans -> mysql -> 9/10
-        console.log(userAnswers.value,)
-      
-        console.log('jjj',this.downcount)
-           api.post(`analytic/answer_test`, {candidate_id : candidate_id.value, testlog_id : testlog_id.value,userAnswers: userAnswers.value, countdown : this.countdown},
+           api.post(`analytic/answer_test`, {candidate_id : candidate_id.value, testlog_id : testlog_id.value,userAnswers: userAnswers.value, timelimit : timelimit.value, timepassed: timelimit.value - timePassed.value  },
         {
   headers: {
     Authorization: 'Bearer ' + token.value
@@ -97,8 +71,41 @@ export default {
 
 
           
+      }
+
+    return {
+      currentQuestion: 0,
+      slideOption,
+      timePassed,
+      userAnswers,
+      numberToChar,
+      questions,
+      hello,
+      refBaseTimer,
+      timelimit,
+      submitResult,
+      slide,
+        onSubmit (evt) {
+        const formData = new FormData(evt.target)
+        const data = []
+
+        for (const [ name, value ] of formData.entries()) {
+          data.push({
+            name,
+            value
+          })
+        }
+
+        submitResult.value = data
       },
-      
+      finish,
+  
+        submitForm() {
+        console.log('refBaseTimer',refBaseTimer.value)
+        timePassed.value = refBaseTimer.value.stopTimer()
+        finish();
+      },
+
       gotoContact() {
         let windowFeatures = "left=200,top=200,width=920,height=520";
       let route = router.resolve({ path: "/calc" });
@@ -113,31 +120,6 @@ alert("radio selected");
     }
   },
   
-  mounted() {
-    //  const downcount = this.formatedCountdown()
-        const stopCountdown = setInterval(() => {
-      //console.log("current countdown", this.countdown);
-      this.countdown -= 1;
-      if (!this.countdown) clearInterval(stopCountdown);
-      if (this.countdown === 0) {  this.finish()}
-    }, 1000);
-   
-  },
-   
-      computed : {
-    formatedCountdown() {
-      const sec = parseInt(this.countdown, 10); // convert value to number if it's string
-    let hours   = Math.floor(sec / 3600); // get hours
-    let minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
-    let seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
-    // add 0 if value < 10; Example: 2 => 02
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    return minutes+':'+seconds;
-      
-    },
-  },
   components: {
     BaseTimer,
   },
@@ -149,12 +131,12 @@ alert("radio selected");
       <h6></h6>
     </div>
 
-    <BaseTimer class="base-timer" />
+    <BaseTimer ref="refBaseTimer" :TIME_LIMIT="timelimit" :isTimeUp="finish" class="base-timer" />
     <h8 class=" row justify-center" style="font-weight:bold">PRESS CALCULATOR BUTTON TO USE CALLCULATOR</h8><br>
     <div class=" row justify-center">
     <q-btn @click="gotoContact()" color="primary" label="calculator"/>
     </div>
-<!-- <div class="col q-pa-md text-h6 flex text-align: center"> Time Left : {{formatedCountdown}}</div> -->
+<!-- <div class="col q-pa-md text-h6 flex text-align: center"> Time Left : {{formatedtimelimit}}</div> -->
 <div class="q-pa-sm" >
   <!-- <b-card-text>
       Question No.{{currentQuestion + 1}} of {{questions.length}}
@@ -218,7 +200,7 @@ alert("radio selected");
     </div >
     
     <br><br>
-    <div class="q-px-sm mybutton" ><q-btn label="Finish" @click="finish()" color="primary"/></div>
+    <div class="q-px-sm mybutton" ><q-btn label="Finish" @click="submitForm" color="primary"/></div>
 </div>
 </template>
 
