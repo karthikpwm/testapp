@@ -8,7 +8,7 @@
       :rows="rows"
       :columns="columns"
       row-key="name"
-      :rows-per-page-options="[0]"
+      :rows-per-page-options="[15]"
       @row-click="onRowClick" 
     />
   </div>
@@ -16,16 +16,26 @@
 </template>
 
 <script>
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '../store/user'
 import { onMounted, ref } from '@vue/runtime-core';
 import { api } from '../boot/axios';
 import { useRouter } from 'vue-router'
 export default {
   setup () {
+    const store = useUserStore()
+    const { token} = storeToRefs( store )
     const router = useRouter()
     const rows = ref([])
     onMounted(() => {
+      console.log(token)
 api
-          .get(`analytic/getmarks`)
+          .get(`analytic/getmarks`,
+          {
+  headers: {
+    Authorization: 'Bearer ' + token.value
+  }
+})
           .then(async (res) => {
             
   let resdata = res.data.data
@@ -89,16 +99,22 @@ api
       style: 'width: 300px',
       sortable: true
     },
-    { name: 'marks scored', align: 'center', label: 'marks scored', field: 'totalcorrect', sortable: true },
-    { name: 'time', label: 'time', field: 'timetaken',align: 'left', sortable: true },
-    { name: 'date', label: 'date', field: 'date',align: 'left', sortable: true },
-    { name: 'email', label: 'email',align: 'left', field: 'email' },
-    { name: 'mobile', label: 'mobile',align: 'left', field: 'mobile' },
+    { name: 'marks scored', align: 'center', label: 'Marks', field: 'totalcorrect', sortable: true },
+    { name: 'time', label: 'Time taken', field: 'timetaken',align: 'center', sortable: true },
+    { name: 'date', label: 'Date', field: 'date',align: 'center', sortable: true },
+    { name: 'email', label: 'Email',align: 'center', field: 'email' },
+    { name: 'mobile', label: 'Mobile',align: 'center', field: 'mobile' },
     
   ]
 
   const onRowClick = (_, row) => {
-      router.push('/printcanquestions/'+row.candidate_id)
+      router.push('/printcanquestions/'+row.candidate_id,
+      {
+  headers: {
+    Authorization: 'Bearer ' + token.value
+  }
+})
+
   }
   
     return {

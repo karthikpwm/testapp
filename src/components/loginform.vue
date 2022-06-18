@@ -12,6 +12,7 @@ import { useRoute, useRouter } from 'vue-router'
 export default {
   
   setup () { 
+    const $q = useQuasar()
         const store = useUserStore()
     const {token, admin} = storeToRefs( store )
 
@@ -20,9 +21,20 @@ export default {
     username: '',
     password: ''
   })
-
+ const Reset = () => {
+  login.value.username = null,
+  login.value.password = null,
+   $q.notify({
+         type: 'positive',
+          message: 'Form Reset' }
+      )
+ }
   const submitForm =  () => {
      if (!login.value.username ||!login.value.password){
+      $q.notify({
+         type: 'negative',
+          message: 'Username or Password is Incorrect' }
+      )
        console.log('error')
      } else {
 
@@ -43,7 +55,8 @@ token.value = res.data.token
 
 return {
   login,
-  submitForm
+  submitForm,
+  Reset
 }
   },
   // setup () {
@@ -122,8 +135,8 @@ return {
       <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
       <div>
-        <q-btn class="full-width" label="Login" type="submit" color="primary" rounded/>
-        <q-btn label="Reset" style="" type="reset" color="primary" flat class="q-ml-md" aria-label="bold"  />
+        <q-btn class="bg-cyan-8 text-grey-1 full-width" label="Login" aria-label="bold" type="submit"  rounded/><br/><br/>
+        <q-btn label="Reset" type="reset" flat class="q-ml-md text-grey-1 bg-cyan-8" rounded aria-label="bold" @click="Reset()"   />
       </div>
     </q-form>
 

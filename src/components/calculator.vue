@@ -283,7 +283,7 @@ export default {
 
 #log-entries {
     border: black solid 1px;
-    border-radius: 10px;
+    border-radius: 1px;
     height: 400px;
     overflow-y: scroll;
 }

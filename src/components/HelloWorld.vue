@@ -49,7 +49,7 @@ export default {
     })
 
     const finish = () => {
-
+        //api.post(`analytic/mail`)
         //$q.loading.show()
         // quwstion_id, uswr_id, uuid, create date time, ans
         // // 
@@ -60,8 +60,14 @@ export default {
     Authorization: 'Bearer ' + token.value
   }
 }).then(res => {
+  api.post(`analytic/getcandidateqstnmarks`,{candidate_id : candidate_id.value}, 
+  {
+  headers: {
+    Authorization: 'Bearer ' + token.value
+  }
+})
         $q.loading.hide()
-  token.value = ''
+  //token.value = ''
         router.push('/result');
 
 })
@@ -109,7 +115,7 @@ export default {
       gotoContact() {
         let windowFeatures = "left=200,top=200,width=920,height=520";
       let route = router.resolve({ path: "/calc" });
-      console.log(windowFeatures,'kkk')
+      //console.log(windowFeatures,'kkk')
       window.open(route.href, "mozillaWindow", windowFeatures);
     },
       
@@ -134,7 +140,7 @@ alert("radio selected");
     <BaseTimer ref="refBaseTimer" :TIME_LIMIT="timelimit" :isTimeUp="finish" class="base-timer" />
     <h8 class=" row justify-center" style="font-weight:bold">PRESS CALCULATOR BUTTON TO USE CALLCULATOR</h8><br>
     <div class=" row justify-center">
-    <q-btn @click="gotoContact()" color="primary" label="calculator"/>
+    <q-btn @click="gotoContact()" class="bg-cyan-8 text-grey-1" label="calculator"/>
     </div>
 <!-- <div class="col q-pa-md text-h6 flex text-align: center"> Time Left : {{formatedtimelimit}}</div> -->
 <div class="q-pa-sm" >
@@ -200,7 +206,9 @@ alert("radio selected");
     </div >
     
     <br><br>
-    <div class="q-px-sm mybutton" ><q-btn label="Finish" @click="submitForm" color="primary"/></div>
+    <div class="q-px-sm mybutton" >
+      Attend all the questions and click finish
+      <q-btn label="Finish" @click="submitForm" class="bg-cyan-8 text-grey-1"/></div>
 </div>
 </template>
 

@@ -15,6 +15,7 @@ export default {
     const store_candiate = useCandidateStore()
     const { token} = storeToRefs( store )
     const { candidate_id,testlog_id, company_id } = storeToRefs( store_candiate )
+    console.log(token)
     const start = () => {
         api.post(`analytic/start_test`, {candidate_id : candidate_id.value,company_id : company_id.value},
         {
@@ -60,7 +61,7 @@ export default {
 
       <q-card-actions>
         <q-btn flat color="dark" label="" />
-        <q-btn class=" " color="primary" label="Start Test" @click="start()" rounded />
+        <q-btn class="bg-cyan-8 text-grey-1" label="Start Test" @click="start()" rounded />
 
         <q-space />
 

@@ -3,7 +3,7 @@
   <div class="q-pa-lg row items-start q-gutter-md" >
   <q-card dark bordered class="child">
       <q-card-section>
-        <div class="text-h6" >Thans for attending the test, Your mark has been sent to your E-mail</div>
+        <div class="text-h6" >Thanks, Your marks have been sent to your E-mail Address</div>
         
       </q-card-section>
 

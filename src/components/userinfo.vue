@@ -1,15 +1,23 @@
 <script>
 import { storeToRefs } from 'pinia'
-import { useQuasar } from 'quasar'
+import { useQuasar,QSpinnerFacebook } from 'quasar'
 // import { ref } from 'vue'
 import { useUserStore } from '../store/user'
 import { useCandidateStore } from '../store/candidate'
 import { useRoute, useRouter } from 'vue-router'
 import { api } from '../boot/axios';
+import { onBeforeUnmount } from 'vue'
 
 export default {
   setup () {
     const $q = useQuasar()
+    let timer
+    onBeforeUnmount(() => {
+      if (timer !== void 0) {
+        clearTimeout(timer)
+        $q.loading.hide()
+      }
+    })
     const route = useRoute()
   const router = useRouter()
   // const form = ref(null);
@@ -19,7 +27,12 @@ export default {
     const { candidate_id, company_id } = storeToRefs( store_candiate )
     const onSubmit = () => {
          if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
+          //alert('Invalid')
            console.log('nooo')
+           $q.notify({
+          type: 'negative',
+          message: 'Must Enter All Fields.'
+        })
           // $q.notify({
           //   color: 'red-5',
           //   textColor: 'white',
@@ -28,7 +41,7 @@ export default {
           // })
        }
       else {
-
+        
         api.post(`analytic/insertcandidate`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile, company_id : admin.value.company_id, timelimit:1200},
         {
   headers: {
@@ -37,11 +50,16 @@ export default {
 }).then(res => {
               candidate_id.value = res.data.insert_id
               company_id.value = admin.value.company_id
-              router.push('/info');
+            
+         router.push('/info')  
 
 })
 .catch(res => {
-  alert(res.response.data.message || 'server not found')
+  //alert(res.response.data.message || 'server not found')
+   $q.notify({
+          type: 'negative',
+          message: 'server not found' || res.response.data.message
+        })
 })
       }
     }
@@ -126,7 +144,7 @@ export default {
       <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
       <div>
-        <q-btn  class="full-width" label="Submit" @click="onSubmit()" color="primary" rounded/>
+        <q-btn  class="full-width bg-cyan-8 text-grey-1" label="Submit" @click="onSubmit()" rounded/>
         <!-- <q-btn label="Start test" @click="goToHome()" color="primary"/> -->
         <!-- <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
       </div>
