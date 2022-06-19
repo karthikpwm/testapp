@@ -28,17 +28,12 @@ export const useUserStore = defineStore("user", () => {
         // },
     ]);
 
-    const website = computed(() =>
-        user.value.email.substring(user.value.email.lastIndexOf("@") + 1)
-    )
-
     const changename = (newname) => {
         user.value.name = newname;
     };
 
     return {
         user,
-        website,
         changename
     }
 })
