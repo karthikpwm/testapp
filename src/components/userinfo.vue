@@ -47,7 +47,10 @@ export default {
           // })
        }
       else {
-        
+        $q.loading.show({
+          message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
+          html: true
+        })
         api.post(`analytic/insertcandidate`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile, company_id : admin.value.company_id, timelimit:1200},
         {
   headers: {
@@ -56,7 +59,7 @@ export default {
 }).then(res => {
               candidate_id.value = res.data.insert_id
               company_id.value = admin.value.company_id
-            
+            $q.loading.hide()
          router.push('/info')  
 
 })

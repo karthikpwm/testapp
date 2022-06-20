@@ -4,7 +4,7 @@ import {useUserStore} from "../store/user"
 import {useCandidateStore} from "../store/candidate"
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router'
-import { useQuasar } from 'quasar'
+import { useQuasar,QSpinnerGears } from 'quasar'
 import { api } from '../boot/axios';
 import BaseTimer from "../components/BaseTimer.vue";
 
@@ -64,6 +64,13 @@ export default {
    console.log("array1 contains null value");
    alert("attend all the questions and press finish button")
 } else {
+   $q.loading.show({
+            spinner: QSpinnerGears,
+            spinnerColor: 'red',
+            messageColor: 'black',
+            backgroundColor: 'yellow',
+            message: 'Updated message'
+          })
            api.post(`analytic/answer_test`, {candidate_id : candidate_id.value, testlog_id : testlog_id.value,userAnswers: userAnswers.value, timelimit : timelimit.value, timepassed: timelimit.value - timePassed.value  },
         {
   headers: {

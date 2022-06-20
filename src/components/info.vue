@@ -1,6 +1,6 @@
 <script>
 import { storeToRefs } from 'pinia'
-import { useQuasar } from 'quasar'
+import { useQuasar,QSpinnerFacebook } from 'quasar'
 // import { ref } from 'vue'
 import { useUserStore } from '../store/user'
 import { useCandidateStore } from '../store/candidate'
@@ -9,6 +9,7 @@ import { api } from '../boot/axios';
 
 export default {
   setup () { 
+    const $q = useQuasar()
   const router = useRouter()
   // const form = ref(null);
     const store = useUserStore()
@@ -17,12 +18,21 @@ export default {
     const { candidate_id,testlog_id, company_id } = storeToRefs( store_candiate )
     console.log(token)
     const start = () => {
+       $q.loading.show({
+          spinner: QSpinnerFacebook,
+          spinnerColor: 'yellow',
+          spinnerSize: 140,
+          backgroundColor: 'purple',
+          message: 'Some important process is in progress. Hang on...',
+          messageColor: 'black'
+        })
         api.post(`analytic/start_test`, {candidate_id : candidate_id.value,company_id : company_id.value},
         {
   headers: {
     Authorization: 'Bearer ' + token.value
   }
 }).then(res => {testlog_id.value = res.data.testlog_id
+ $q.loading.hide()
               router.push('/home');
 
 })
