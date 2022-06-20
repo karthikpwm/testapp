@@ -52,7 +52,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item clickable v-ripple>
+            <q-item clickable v-ripple to="/login">
               <q-item-section avatar>
                 <q-icon name="send" />
               </q-item-section>
@@ -116,7 +116,9 @@ export default ({
     //console.log('app page',loggedinname)
     //console.log('app page',token)
     const logout = () => {
-        token.value = ''
+        token.value = '',
+        admin.value = '',
+        window.location.reload()
          router.push('/');
         
          

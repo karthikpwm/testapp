@@ -9,6 +9,9 @@ import { api } from '../boot/axios';
 import { onBeforeUnmount } from 'vue'
 
 export default {
+  data() {
+       
+  },
   setup () {
     const $q = useQuasar()
     let timer
@@ -71,10 +74,7 @@ export default {
       onSubmit,
       onReset () {
         // form reset
-        user.value.name='',
-        user.value.email = '',
-        user.value.position = '',
-        user.value.mobile = ''
+        
         
       }
     }
@@ -84,9 +84,9 @@ export default {
 
 <template>
 <div class="page-container window-height row justify-center items-center" >
-  <div class="q-pa-md row justify-center" style="background-color: white;max-width: 400px">
+  <div class="q-pa-md row justify-center" style="background-color: white;max-width: 400px; border-radius:25px;" rounded>
   <div class="col-12 text-center self-center">
-    <h5 class="text-h6 text-uppercase q-my-none">Enter Your Details</h5>
+    <h5 class="text-h6 text-uppercase q-my-none" style="font-family:verdana;">Enter Your Details</h5>
     
   </div>
     
@@ -96,11 +96,14 @@ export default {
       class="q-gutter-md"
     >
       <q-input
-        filled
+        rounded standout bottom-slots
         v-model="user.name"
         label="Your name "
         hint="Name and surname"
+        
+        
         lazy-rules
+        
         :rules="[ val => val && val.length > 0 || 'Please type something']"
       />
 
@@ -113,11 +116,14 @@ export default {
 {...user} -->
 
       <q-input
-        filled
+        rounded standout bottom-slots
         type= "text"
         v-model="user.position"
         label="Position"
         lazy-rules
+        
+        
+       
         :rules="[val => val && val.length > 0 || 'Please type something'
           // val => val !== null && val !== '' || 'Please type your age',
           // val => val > 0 && val < 100 || 'Please type a real age'
@@ -125,10 +131,13 @@ export default {
       />
 
       <q-input
-        filled
+        rounded standout bottom-slots
         type="text"
         v-model="user.email"
         label="Your email id"
+        
+        
+        
         lazy-rules
         :rules="[val => val && val.length > 0 || 'Please type something'
           // val => val !== null && val !== '' || 'Please type your age',
@@ -137,11 +146,14 @@ export default {
       />
 
       <q-input
-        filled
+        rounded standout bottom-slots
         type="text"
         v-model="user.mobile"
         label="Your mobile no"
         lazy-rules
+        
+        
+        
         :rules="[val => val && val.length > 0 || 'Please type something'
           // val => val !== null && val !== '' || 'Please type your age',
           // val => val > 0 && val < 100 || 'Please type a real age'

@@ -2,6 +2,7 @@ import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 
 const api = axios.create({ baseURL: import.meta.env.VITE_APP_BACK_URL })
+//const api = axios.create({ baseURL: "http://localhost:3001/" })
 
 export default boot(({ app }) => {
     // for use inside Vue files (Options API) through this.$axios and this.$api

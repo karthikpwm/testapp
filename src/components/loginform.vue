@@ -115,26 +115,27 @@ return {
       class="q-gutter-md" @submit.prevent="submitForm"
     >
       <q-input
-        filled
+      rounded standout bottom-slots
+        
         v-model="login.username"
         label="Username"
         hint="email id"
-        label-color="black"
+        
         debounce="black"
-        bg-color="white"
+        
         
       />
 
       <q-input
-        filled
+        rounded standout bottom-slots
         
         v-model="login.password"
         label="Password"
         hint="password"
         type="password"
-        label-color="black"
+        
          debounce="black"
-         bg-color="white"
+        
         
       />
 
@@ -153,7 +154,7 @@ return {
 .img {
   height: 380px;
    width: 80%;
-background-image: url("./img/login1.jpg");
+/* background-image: url("./img/login1.jpg"); */
 background-size: contain;
  background-repeat: no-repeat
  
