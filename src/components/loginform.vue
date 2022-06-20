@@ -14,7 +14,7 @@ export default {
   setup () { 
     const $q = useQuasar()
         const store = useUserStore()
-    const {token, admin} = storeToRefs( store )
+    const {token, admin,loggedinname} = storeToRefs( store )
 
   const router = useRouter()
   const login = ref({
@@ -44,6 +44,9 @@ export default {
             
 token.value = res.data.token
              admin.value = res.data.user
+             loggedinname.value = res.data.user.name
+             //console.log(loggedinname.value)
+             //console.log(token.value)
              router.push('/user');
           })
           .catch((res) => {
@@ -118,6 +121,8 @@ return {
         hint="email id"
         label-color="black"
         debounce="black"
+        bg-color="white"
+        
       />
 
       <q-input
@@ -129,6 +134,7 @@ return {
         type="password"
         label-color="black"
          debounce="black"
+         bg-color="white"
         
       />
 

@@ -20,7 +20,8 @@ export const useUserStore = defineStore("user", () => {
     const userAnswers = ref({})
     const questions = ref([])
     const token = ref('')
-
+    const loggedinname = ref('')
+    console.log("userstore", token, loggedinname)
     const insertUser = async (user) => {
         await api.post(`analytic/questions`, { user })
 
@@ -51,6 +52,7 @@ export const useUserStore = defineStore("user", () => {
         userAnswers,
         token,
         admin,
+        loggedinname,
         getQuestion,
         insertUser
     }

@@ -12,19 +12,22 @@ export default {
   setup () {
     const $q = useQuasar()
     let timer
+    // 2 min -> 1 min -> unmo b -> c -> c -> b mo -> ch
     onBeforeUnmount(() => {
       if (timer !== void 0) {
         clearTimeout(timer)
         $q.loading.hide()
       }
+      
     })
     const route = useRoute()
   const router = useRouter()
   // const form = ref(null);
     const store = useUserStore()
     const store_candiate = useCandidateStore()
-    const {user, token, admin} = storeToRefs( store )
+    const {user, token, admin,loggedinname} = storeToRefs( store )
     const { candidate_id, company_id } = storeToRefs( store_candiate )
+    //console.log("userinfopage",loggedinname.value)
     const onSubmit = () => {
          if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
           //alert('Invalid')
@@ -68,6 +71,10 @@ export default {
       onSubmit,
       onReset () {
         // form reset
+        user.value.name='',
+        user.value.email = '',
+        user.value.position = '',
+        user.value.mobile = ''
         
       }
     }

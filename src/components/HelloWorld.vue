@@ -54,6 +54,16 @@ export default {
         // quwstion_id, uswr_id, uuid, create date time, ans
         // // 
         // user ans -> mysql -> 9/10
+         //console.log(userAnswers.value)
+      let adata = userAnswers.value
+      //console.log(Object.values(adata))
+      let bdata = []
+      bdata = Object.values(adata)
+      console.log(bdata)
+      if (bdata.includes(null) == true) {
+   console.log("array1 contains null value");
+   alert("attend all the questions and press finish button")
+} else {
            api.post(`analytic/answer_test`, {candidate_id : candidate_id.value, testlog_id : testlog_id.value,userAnswers: userAnswers.value, timelimit : timelimit.value, timepassed: timelimit.value - timePassed.value  },
         {
   headers: {
@@ -78,7 +88,7 @@ export default {
 
           
       }
-
+    }
     return {
       currentQuestion: 0,
       slideOption,
@@ -138,9 +148,16 @@ alert("radio selected");
     </div>
 
     <BaseTimer ref="refBaseTimer" :TIME_LIMIT="timelimit" :isTimeUp="finish" class="base-timer" />
-    <h8 class=" row justify-center" style="font-weight:bold">PRESS CALCULATOR BUTTON TO USE CALLCULATOR</h8><br>
+    <!-- <h8 class=" row justify-center" style="font-weight:bold"></h8><br> -->
     <div class=" row justify-center">
-    <q-btn @click="gotoContact()" class="bg-cyan-8 text-grey-1" label="calculator"/>
+    <q-btn @click="gotoContact()" class="bg-cyan-8 text-grey-1" label="calculator">
+    <q-tooltip
+          transition-show="rotate"
+          transition-hide="rotate"
+        >
+          Click this button for calculator
+        </q-tooltip>
+      </q-btn>
     </div>
 <!-- <div class="col q-pa-md text-h6 flex text-align: center"> Time Left : {{formatedtimelimit}}</div> -->
 <div class="q-pa-sm" >
@@ -207,8 +224,14 @@ alert("radio selected");
     
     <br><br>
     <div class="q-px-sm mybutton" >
-      Attend all the questions and click finish
-      <q-btn label="Finish" @click="submitForm" class="bg-cyan-8 text-grey-1"/></div>
+      
+      <q-btn label="Finish" @click="submitForm" class="bg-cyan-8 text-grey-1"> <q-tooltip
+          transition-show="rotate"
+          transition-hide="rotate"
+        >
+          Attend All Questions And Click Finish
+        </q-tooltip>
+      </q-btn></div>
 </div>
 </template>
 
