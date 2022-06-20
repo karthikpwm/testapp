@@ -37,7 +37,11 @@ export default {
       )
        console.log('error')
      } else {
-
+         $q.loading.show({
+          message: 'Doing something. Please wait...',
+          boxClass: 'bg-grey-2 text-grey-9',
+          spinnerColor: 'primary'
+        })
         api
           .post(`user/login`, {email : login.value.username,password : login.value.password})
           .then(async (res) => {
@@ -47,6 +51,7 @@ token.value = res.data.token
              loggedinname.value = res.data.user.name
              //console.log(loggedinname.value)
              //console.log(token.value)
+             $q.loading.hide()
              router.push('/user');
           })
           .catch((res) => {
