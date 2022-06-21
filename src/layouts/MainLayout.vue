@@ -110,15 +110,15 @@ export default ({
   setup() {
     const drawer = ref(false)
     const store = useUserStore()
-    const {token,admin,loggedinname} = storeToRefs( store )
+    const {token,user,loggedinname} = storeToRefs( store )
     const router = useRouter()
     const adminname =  loggedinname.value
     //console.log('app page',loggedinname)
     //console.log('app page',token)
     const logout = () => {
         token.value = '',
-        admin.value = '',
-        window.location.reload()
+        user.value = '',
+        //window.location.reload()
          router.push('/');
         
          
