@@ -108,12 +108,22 @@ api
   ]
 
   const onRowClick = (_, row) => {
-      router.push('/printcanquestions/'+row.candidate_id,
-      {
+    let windowFeatures = "left=200,top=200,width=920,height=520";
+      let route = router.push('/printcanquestions/'+row.candidate_id,
+       {
   headers: {
     Authorization: 'Bearer ' + token.value
   }
 })
+      //console.log(windowFeatures,'kkk')
+      window.open(route.href, "mozillaWindow", windowFeatures);
+
+      //router.push('/printcanquestions/'+row.candidate_id,
+//       {
+//   headers: {
+//     Authorization: 'Bearer ' + token.value
+//   }
+// })
 
   }
   

@@ -166,7 +166,7 @@ export default {
 <style scoped>
 .bg-image {
   position: relative;
-    background-image: url(https://www.mountainphotography.com/images/xl/20041002-Lone-Eagle-Reflection-B-W.jpg);
+    background-image: url();
     background-repeat: no-repeat;
     background-size: cover;
   }
