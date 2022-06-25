@@ -109,8 +109,9 @@ api
 
   const onRowClick = (_, row) => {
     let windowFeatures = "left=200,top=200,width=920,height=520";
-      let route = router.push('/printcanquestions/'+row.candidate_id,
-       {
+      //let route = router.push('/printcanquestions/'+row.candidate_id,
+      let route = router.resolve({ path: '/printcanquestions/'+row.candidate_id,
+       
   headers: {
     Authorization: 'Bearer ' + token.value
   }
