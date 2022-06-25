@@ -28,10 +28,10 @@ const routes = [
       { path: "/cresult", component: () => import("../components/candidateresults.vue"), meta: { requiresAuth: true } },
       { path: "/calc", component: () => import("../components/calculator.vue"), meta: { requiresAuth: true } },
       { path: "/email", component: () => import("../components/emailgenerate.vue"), meta: { requiresAuth: true } },
-      { path: "/token", component: () => import("../components/tokengenerate.vue") },
+      { path: "/token", component: () => import("../components/tokengenerate.vue"), meta: { requiresAuth: true } },
       { path: "/errorpage", component: () => import("../components/errorPageNotFound.vue") },
       { path: "/printcanquestions/:id", component: () => import("../components/printcandidatequestions.vue") },
-      { path: "/token/test/:token", component: () => import("../components/token.vue"), meta: { requiresAuth: true } },
+      { path: "/token/test/:token", component: () => import("../components/token.vue") },
       { path: '/:pathMatch(.*)*', redirect: '/login' },
 
     ]
