@@ -1,6 +1,6 @@
 <script>
 import { useQuasar } from 'quasar'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '../store/user'
 
@@ -14,13 +14,16 @@ export default {
   setup () { 
     const $q = useQuasar()
         const store = useUserStore()
-    const {token, admin,loggedinname} = storeToRefs( store )
-
+    const {token, admin,loggedinname,company_id,user} = storeToRefs( store )
+  
   const router = useRouter()
   const login = ref({
     username: '',
     password: ''
   })
+  // onMounted(async () => {
+  //   user.value = null
+  //  })
  const Reset = () => {
   login.value.username = null,
   login.value.password = null,
@@ -49,13 +52,22 @@ export default {
 token.value = res.data.token
              admin.value = res.data.user
              loggedinname.value = res.data.user.name
+             company_id.value = res.data.user.company_id
+
              //console.log(loggedinname.value)
              //console.log(token.value)
-             $q.loading.hide()
+             
+          $q.loading.hide()
+          
              router.push('/user');
           })
           .catch((res) => {
-            console.log(res)
+            timer = setTimeout(() => {
+          $q.loading.hide()
+          timer = void 0
+        }, 2000)
+            //$q.loading.hide()
+            //console.log(res)
             alert(res.response.data.message || 'server not found')
           })
      }
@@ -112,7 +124,7 @@ return {
 
 <template>
 
-<div class="page-container window-height row justify-center flex items-center ">
+<div class="page-container window-height row justify-center flex items-center bg-image">
   <div class="img row justify-center" style="background-color: white;max-width: 278px;max-height: 372px; border-radius:25px;"  rounded>
 <div class="col-12 text-center self-center"> <h6 class="text-h6 text-uppercase q-my-none">LOGIN </h6> </div>
     <q-form
@@ -120,26 +132,26 @@ return {
       class="q-gutter-md" @submit.prevent="submitForm"
     >
       <q-input
-      rounded standout bottom-slots
+      
         
         v-model="login.username"
         label="Username"
-        hint="email id"
         
-        debounce="black"
+        
+        
         
         
       />
 
       <q-input
-        rounded standout bottom-slots
+        
         
         v-model="login.password"
         label="Password"
-        hint="password"
+        
         type="password"
         
-         debounce="black"
+         debounce
         
         
       />
@@ -173,7 +185,13 @@ background-size: contain;
 .window-height {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-    height: 80vh !important;
+    height: 100vh !important;
 }
+.bg-image {
+  position: relative;
+    background-image: url(https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41561-021-00694-4/MediaObjects/41561_2021_694_Figa_HTML.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 </style>
 

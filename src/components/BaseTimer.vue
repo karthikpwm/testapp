@@ -130,8 +130,8 @@ export default {
 <style scoped>
 .base-timer {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 12px;
 }
 
 .base-timer__svg {
@@ -172,12 +172,12 @@ export default {
 
 .base-timer__label {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 90px;
   top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
+  font-size: 20px;
 }
 </style>

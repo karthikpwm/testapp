@@ -60,17 +60,17 @@ export default {
       let bdata = []
       bdata = Object.values(adata)
       console.log(bdata)
-      if (bdata.includes(null) == true) {
-   console.log("array1 contains null value");
-   alert("attend all the questions and press finish button")
-} else {
-   $q.loading.show({
-            spinner: QSpinnerGears,
-            spinnerColor: 'red',
-            messageColor: 'black',
-            backgroundColor: 'yellow',
-            message: 'Updated message'
-          })
+//       if (bdata.includes(null) == true) {
+//    console.log("array1 contains null value");
+//    alert("attend all the questions and press finish button")
+// } else {
+  //  $q.loading.show({
+  //           spinner: QSpinnerGears,
+  //           spinnerColor: 'red',
+  //           messageColor: 'black',
+  //           backgroundColor: 'yellow',
+  //           message: 'Updated message'
+  //         })
            api.post(`analytic/answer_test`, {candidate_id : candidate_id.value, testlog_id : testlog_id.value,userAnswers: userAnswers.value, timelimit : timelimit.value, timepassed: timelimit.value - timePassed.value  },
         {
   headers: {
@@ -94,7 +94,7 @@ export default {
 
 
           
-      }
+      // }
     }
     return {
       currentQuestion: 0,
@@ -156,7 +156,7 @@ alert("radio selected");
 
     <BaseTimer ref="refBaseTimer" :TIME_LIMIT="timelimit" :isTimeUp="finish" class="base-timer" />
     <!-- <h8 class=" row justify-center" style="font-weight:bold"></h8><br> -->
-    <div class=" row justify-center">
+    <!-- <div class=" row justify-center">
     <q-btn @click="gotoContact()" class="bg-cyan-8 text-grey-1" label="calculator">
     <q-tooltip
           transition-show="rotate"
@@ -165,7 +165,7 @@ alert("radio selected");
           Click this button for calculator
         </q-tooltip>
       </q-btn>
-    </div>
+    </div> -->
 <!-- <div class="col q-pa-md text-h6 flex text-align: center"> Time Left : {{formatedtimelimit}}</div> -->
 <div class="q-pa-sm" >
   <!-- <b-card-text>
@@ -179,11 +179,12 @@ alert("radio selected");
       control-color="primary"
       class="rounded-borders"
       height="560px"
+      
     >
-    <q-carousel-slide v-for="(question) in questions" :key="question.question_id"  :name="question.question_id" class="column no-wrap" >
+    <q-carousel-slide v-for="(question) in questions" :key="question.question_id"  :name="question.question_id" class="column no-wrap"  >
 
       <q-icon name="1" color="primary" size="56px" />
-        <div class="q-mt-md text-center">
+        <div class="q-mt-md text-center" style="font-weight:bold; font-size: medium; font-style: normal;">
          <q-card class="" full width >
     <q-card-section>
       {{question.question}}

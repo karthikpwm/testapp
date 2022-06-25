@@ -1,0 +1,228 @@
+<template>
+<div class="page-container" style="padding-top: 39px">
+<div class="row justify-center" style="background-color:white; font-family:'Times New Roman', serif;">
+  <h5>Token Generation</h5>
+</div>
+
+  <div class="page-container window- row justify-center flex items-center" style="background-color:white;">
+    <div class="row justify center" style="max-width: 470px">
+    
+      <!-- <div class="name" 
+      v-for="(applicant, counter) in applicants"
+      v-bind:key="counter">
+      <span @click="deleteVisa(counter)">x</span> -->
+      <!-- <label for="duration">{{counter+1}}. Name:</label> -->
+      <!-- <q-input filled v-model="applicant.name" label="Name" /> -->
+      <!-- <label for="duration">Email Id:</label> -->
+      <!-- <q-input filled v-model="applicant.email" label="Email" />
+      </div>
+
+<q-btn @click="addVisa" color="primary"> Add another Details</q-btn>
+      
+    </div>
+    <div> -->
+      <span1>
+    <q-input filled v-model="date" hint="From date">
+      <template v-slot:prepend>
+        <q-icon name="event" class="cursor-pointer">
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-date v-model="date" mask="YYYY-MM-DD HH:mm">
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup label="Close" color="primary"/>
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+
+      <template v-slot:append>
+        <q-icon name="access_time" class="cursor-pointer">
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-time v-model="date" mask="YYYY-MM-DD HH:mm" format24h>
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup label="Close" color="primary" />
+              </div>
+            </q-time>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+    <q-input filled v-model="date1" hint="To date">
+      <template v-slot:prepend>
+        <q-icon name="event" class="cursor-pointer">
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-date v-model="date1" mask="YYYY-MM-DD HH:mm">
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup label="Close" color="primary" />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+
+      <template v-slot:append>
+        <q-icon name="access_time" class="cursor-pointer">
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-time v-model="date1" mask="YYYY-MM-DD HH:mm" format24h>
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup label="Close" color="primary" />
+              </div>
+            </q-time>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>  </span1><br/>
+    <textarea filled v-model="generatetoken" rows="10" cols="30"></textarea>
+    <q-btn @click="tokengen" color="primary">generate token</q-btn>
+    </div>
+  </div>
+  </div>
+</template>
+
+<script>
+import { storeToRefs } from 'pinia'
+  import { ref } from 'vue'
+  import { api } from '../boot/axios';
+  import { useUserStore } from '../store/user'
+ 
+  
+  export default {
+     data(){
+    return {
+       applicants:[
+       {
+      name: '',
+      email:''
+       },
+     ],
+     
+    }
+  },
+  methods : {
+    addVisa(){
+      this.applicants.push({
+        name:'',
+        email: ''
+      })
+    },
+    
+    deleteVisa(counter){
+      this.applicants.splice(counter,1);
+}
+  },
+    setup () {
+      const store = useUserStore()
+      
+      const generatetoken = ref()
+      const { token,admin,company_id} = storeToRefs( store )
+      
+      console.log('compid',company_id.value)
+      console.log('orgnltoken',company_id)
+      const date = ref('')
+        const date1 = ref('')
+       const  convertedFrmDate = ref()
+       const convertedToDate = ref()
+       const datetime1 = ref()
+        const frmdate = new Date();
+        const datetime = frmdate.getDate() + "-"
+                + (frmdate.getMonth()+1)  + "-" 
+                + frmdate.getFullYear() + " "  
+                + frmdate.getHours() + ":"  
+                + frmdate.getMinutes() 
+                console.log(datetime)
+                date.value =datetime
+               
+                const todate = new Date()
+         datetime1.value = todate.getDate() + "-"
+                + (todate.getMonth()+1)  + "-" 
+                + todate.getFullYear() + " "  
+                + (todate.getHours()) + ":"  
+                + (todate.getMinutes()+30) 
+                //console.log(todate)
+                date1.value =datetime1
+                convertedFrmDate.value = frmdate.getTime()
+                var dt = new Date();
+         todate.setHours( todate.getMinutes() + 30 );
+
+
+                convertedToDate.value = todate.getTime()
+                parseInt(datetime1)
+                console.log(convertedToDate.value)
+      const tokengen = () => {
+        api .post(`token/jwt`,{fromDate : convertedFrmDate.value,toDate : convertedToDate.value,company_id :company_id.value },
+        {
+  headers: {
+    Authorization: 'Bearer ' + token.value
+  }
+}) 
+        .then(async (res) => {
+        generatetoken.value ="https://fathomless-woodland-86572.herokuapp.com/token/test/" + res.data.token 
+        //  applicant.name.value = generatetoken
+         
+         console.log('newtoken',generatetoken.value)
+        })
+         .catch((res) => {
+            
+            console.log(res)
+            alert(res.data || 'server not found')
+          })
+      }
+     
+      return {
+        generatetoken,
+        tokengen,
+        msg: '',
+        text: ref(''),
+        date1,
+        date,
+        convertedFrmDate
+      }
+    }
+  }
+  </script>
+
+  <style scoped>
+#visa {
+  margin: 10px auto;
+  max-width: 500px;
+  max-height: fit-content;
+}
+label{
+  display: block;
+  margin: 20px 0 10px;
+}
+input {
+  font-size: 15px;
+  border: 1px double rgb(102, 97, 96) ;
+  border-radius: 4px;
+}
+button {
+  font-size: 12px;
+ background: rgb(64, 179, 140);
+  padding: 0.4rem 1.3rem;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+ margin: 10px;
+}
+span{
+  width: 10px;
+  float: right;
+  cursor: pointer;
+}
+span1{
+  width: 230px;
+  float: right;
+  cursor: pointer;
+  padding-right: 10px;
+}
+span:hover{
+  color: brown;
+}
+.name{
+  border: 1.5px solid;
+  padding:7px;
+  margin-bottom: 10px;
+}
+</style>

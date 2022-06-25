@@ -28,9 +28,9 @@ export default {
   // const form = ref(null);
     const store = useUserStore()
     const store_candiate = useCandidateStore()
-    const {user, token, admin,loggedinname} = storeToRefs( store )
-    const { candidate_id, company_id } = storeToRefs( store_candiate )
-    //console.log("userinfopage",admin.value)
+    const {user, token, admin,loggedinname,company_id} = storeToRefs( store )
+    const { candidate_id,company1_id } = storeToRefs( store_candiate )
+    //console.log("userinfopage",loggedinname.value)
     const onSubmit = () => {
          if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
           //alert('Invalid')
@@ -51,16 +51,18 @@ export default {
           message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
           html: true
         })
-        api.post(`analytic/insertcandidate`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile, company_id : admin.value.company_id, timelimit:1200},
+        api.post(`guest/newregister`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile, company_id : company_id.value, timelimit:1200},
         {
-  headers: {
-    Authorization: 'Bearer ' + token.value
-  }
+  // headers: {
+  //   Authorization: 'Bearer ' + token.value
+  // }
 }).then(res => {
               candidate_id.value = res.data.insert_id
-              company_id.value = admin.value.company_id
+              company1_id.value = company_id.value
+             token.value = res.data.token
+             console.log(candidate_id.value)
             $q.loading.hide()
-         router.push('/info')  
+         router.push('/guestinfo')  
 
 })
 .catch(res => {
@@ -95,7 +97,7 @@ export default {
 <div class="page-container window-height row justify-center items-center bg-image" >
   <div class="q-pa-md row justify-center" style="background-color: white;max-width: 370px; border-radius:25px;" rounded>
   <div class="col-12 text-center self-center">
-    <h5 class="text-h6 text-uppercase q-my-none" style="font-family:verdana;">Enter Your Details</h5>
+    <h5 class="text-h6 text-uppercase q-my-none" style="font-family:verdana; font-weight: 100;">Enter Your Details</h5>
     
   </div>
     
@@ -129,7 +131,6 @@ export default {
         type= "text"
         v-model="user.position"
         label="Position"
-       
         
       />
 
@@ -139,7 +140,6 @@ export default {
         v-model="user.email"
         label="Your email id"
         
-        
       />
 
       <q-input
@@ -147,6 +147,7 @@ export default {
         type="text"
         v-model="user.mobile"
         label="Your mobile no"
+        lazy-rules
         
       />
 
@@ -163,10 +164,12 @@ export default {
 </div>
 </template>
 
-<style scoped>
+<style>
+
+
 .bg-image {
   position: relative;
-    background-image: url(https://www.mountainphotography.com/images/xl/20041002-Lone-Eagle-Reflection-B-W.jpg);
+    background-image: url();
     background-repeat: no-repeat;
     background-size: cover;
   }

@@ -11,6 +11,8 @@ export const useUserStore = defineStore("user", () => {
         company_id: ''
     })
 
+    const userType = ref('guest')
+
     const admin = ref({
         name: '',
         email: '',
@@ -21,6 +23,8 @@ export const useUserStore = defineStore("user", () => {
     const questions = ref([])
     const token = ref('')
     const loggedinname = ref('')
+    const company1_id = ref('')
+    const company_id = ref('')
     console.log("userstore", token, loggedinname)
     const insertUser = async (user) => {
         await api.post(`analytic/questions`, { user })
@@ -53,6 +57,9 @@ export const useUserStore = defineStore("user", () => {
         token,
         admin,
         loggedinname,
+        company1_id,
+        company_id,
+        userType,
         getQuestion,
         insertUser
     }

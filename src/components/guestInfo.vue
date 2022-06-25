@@ -15,7 +15,7 @@ export default {
     const store = useUserStore()
     const store_candiate = useCandidateStore()
     const { token} = storeToRefs( store )
-    const { candidate_id,testlog_id, company_id } = storeToRefs( store_candiate )
+    const { candidate_id,testlog_id, company1_id } = storeToRefs( store_candiate )
     console.log(token)
     const start = () => {
       //  $q.loading.show({
@@ -26,7 +26,7 @@ export default {
       //     message: 'Some important process is in progress. Hang on...',
       //     messageColor: 'black'
       //   })
-        api.post(`analytic/start_test`, {candidate_id : candidate_id.value,company_id : company_id.value},
+        api.post(`analytic/start_test`, {candidate_id : candidate_id.value,company_id : company1_id.value},
         {
   headers: {
     Authorization: 'Bearer ' + token.value
