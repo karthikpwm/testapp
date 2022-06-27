@@ -5,7 +5,7 @@
 </div>
 
   <div class="page-container window- row justify-center flex items-center" style="background-color:white;">
-    <div class="row justify center" style="max-width: 470px">
+    <div class="row justify center" style="max-width: 520px">
     
       <!-- <div class="name" 
       v-for="(applicant, counter) in applicants"
@@ -21,8 +21,14 @@
       
     </div>
     <div> -->
+      
+    <!-- <div class="q-pb-sm">
+      <q-badge color="teal">
+        Model: {{ date }}
+      </q-badge>
+    </div> -->
       <span1>
-    <q-input filled v-model="date" hint="From date">
+    <q-input filled v-model="date" outlined hint="From date">
       <template v-slot:prepend>
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -38,7 +44,7 @@
       <template v-slot:append>
         <q-icon name="access_time" class="cursor-pointer">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-            <q-time v-model="date" mask="YYYY-MM-DD HH:mm" format24h>
+            <q-time v-model="date" mask="YYYY-MM-DD HH:mm">
               <div class="row items-center justify-end">
                 <q-btn v-close-popup label="Close" color="primary" />
               </div>
@@ -47,7 +53,7 @@
         </q-icon>
       </template>
     </q-input>
-    <q-input filled v-model="date1" hint="To date">
+    <q-input filled v-model="date1" outlined hint="To date">
       <template v-slot:prepend>
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -72,7 +78,9 @@
         </q-icon>
       </template>
     </q-input>  </span1><br/>
-    <textarea filled v-model="generatetoken" rows="10" cols="30"></textarea>
+    <q-input type="textarea" v-model="generatetoken" rows="10" cols="30" outlined clearable >
+    
+    </q-input>
     <q-btn @click="tokengen" color="primary">generate token</q-btn>
     </div>
   </div>
@@ -80,10 +88,13 @@
 </template>
 
 <script>
+import { parse } from '@babel/parser';
+import { now } from 'lodash';
 import { storeToRefs } from 'pinia'
-  import { ref } from 'vue'
-  import { api } from '../boot/axios';
-  import { useUserStore } from '../store/user'
+import { ref } from 'vue'
+import { api } from '../boot/axios';
+import { useUserStore } from '../store/user'
+import moment from 'moment'
  
   
   export default {
@@ -115,41 +126,21 @@ import { storeToRefs } from 'pinia'
       
       const generatetoken = ref()
       const { token,admin,company_id} = storeToRefs( store )
-      
-      console.log('compid',company_id.value)
-      console.log('orgnltoken',company_id)
       const date = ref('')
-        const date1 = ref('')
-       const  convertedFrmDate = ref()
-       const convertedToDate = ref()
-       const datetime1 = ref()
-        const frmdate = new Date();
-        const datetime = frmdate.getDate() + "-"
-                + (frmdate.getMonth()+1)  + "-" 
-                + frmdate.getFullYear() + " "  
-                + frmdate.getHours() + ":"  
-                + frmdate.getMinutes() 
-                console.log(datetime)
-                date.value =datetime
-               
-                const todate = new Date()
-         datetime1.value = todate.getDate() + "-"
-                + (todate.getMonth()+1)  + "-" 
-                + todate.getFullYear() + " "  
-                + (todate.getHours()) + ":"  
-                + (todate.getMinutes()+30) 
-                //console.log(todate)
-                date1.value =datetime1
-                convertedFrmDate.value = frmdate.getTime()
-                var dt = new Date();
-         todate.setHours( todate.getMinutes() + 30 );
-
-
-                convertedToDate.value = todate.getTime()
-                parseInt(datetime1)
-                console.log(convertedToDate.value)
+      const date1 = ref('')
+      const mask="YYYY-MM-DD HH:mm"
+      //console.log('compid',company_id.value)
+      //console.log('orgnltoken',company_id)
+      
+     
       const tokengen = () => {
-        api .post(`token/jwt`,{fromDate : convertedFrmDate.value,toDate : convertedToDate.value,company_id :company_id.value },
+       var abc = Date.parse(date.value)
+       var bcd = Date.parse(date1.value)
+         //console.log(abc)
+      //var cde =  date.value
+       //console.log('dddd',cde,date1.value)
+      // return date
+        api .post(`token/jwt`,{fromDate : abc,toDate : bcd,company_id :company_id.value },
         {
   headers: {
     Authorization: 'Bearer ' + token.value
@@ -159,7 +150,7 @@ import { storeToRefs } from 'pinia'
         generatetoken.value ="https://fathomless-woodland-86572.herokuapp.com/token/test/" + res.data.token 
         //  applicant.name.value = generatetoken
          
-         console.log('newtoken',generatetoken.value)
+         //console.log('newtoken',generatetoken.value)
         })
          .catch((res) => {
             
@@ -174,8 +165,8 @@ import { storeToRefs } from 'pinia'
         msg: '',
         text: ref(''),
         date1,
-        date,
-        convertedFrmDate
+         date
+      
       }
     }
   }

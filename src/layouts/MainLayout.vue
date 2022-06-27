@@ -2,7 +2,7 @@
   <q-layout view="hHh Lpr lff" style="background-color:#f2f2f2" class="shadow-2 rounded-borders">
      
 
-     <q-header v-if="a" elevated class="bg-cyan-8">
+     <q-header v-if="a" elevated class="primary">
         <q-toolbar>
           <q-btn flat @click="drawer = !drawer" round dense icon="menu"  />
           <!-- <q-avatar>
@@ -77,7 +77,7 @@
               </q-item-section>
 
               <q-item-section>
-                Token Generate
+                E-Mail Link
               </q-item-section>
             </q-item>
           </q-list>
