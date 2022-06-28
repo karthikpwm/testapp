@@ -173,7 +173,7 @@ export default {
 .base-timer__label {
   position: absolute;
   width: 80px;
-  height: 90px;
+  height: 82px;
   top: 0;
   display: flex;
   align-items: center;

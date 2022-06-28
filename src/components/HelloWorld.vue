@@ -33,20 +33,53 @@ export default {
     const {  testlog_id , candidate_id} = storeToRefs(candidatestore);
     const slideOption = ref([])
     const slide = ref(0)
+    const max = ref(0)
+    const min = ref(0)
+    const lastvalue = ref(0)
+    const pagination = ref(0)
     onMounted( async () => {
         //$q.loading.show()
 
       await store.getQuestion(testlog_id.value,candidate_id.value)
       let i = 0;
-      slide.value = questions.value[0].question_id
+//       questions.value.sort(function (x, y) {
+//     return x.question_id - y.question_id;
+// });
+
+// console.log(questions);
+
+      // slide.value = questions.value[0].question_id
+      max.value = questions.value[0].question_id
+      //lastvalue.value = questions.value.length - 1
+      lastvalue.value = questions.value.length - 1
+      //min.value = questions.value[lastvalue.value].question_id
       slideOption.value = questions.value.map((x) => { 
         i++;
         return {'label' : i, 'value' : x.question_id }
       })
+      //console.log(questions)
+      //console.log(lastvalue)
         $q.loading.hide()
 
 
     })
+    const prev = () => {
+      
+     const pot = max.value
+     //console.log('potvalue',max.value)
+     if ( slide.value < pot){
+      slide.value  = slide.value - 1
+      //console.log('aa',slide.value)   
+     }
+    }
+    const next = () => {
+      const pot = min.value
+     //console.log('potvalue',pot)
+     if ( slide.value > pot){
+      slide.value  = slide.value + 1
+      //console.log('aa',slide.value)   
+     }
+    }
 
     const finish = () => {
         //api.post(`analytic/mail`)
@@ -108,6 +141,9 @@ export default {
       timelimit,
       submitResult,
       slide,
+      prev,
+      lastvalue,
+      next,
         onSubmit (evt) {
         const formData = new FormData(evt.target)
         const data = []
@@ -171,6 +207,7 @@ alert("radio selected");
   <!-- <b-card-text>
       Question No.{{currentQuestion + 1}} of {{questions.length}}
     </b-card-text> -->
+   <div class="q-px-xm flex" style="background-color:white;font-weight:50;padding-left:10px" >Question {{ slide + 1}}</div>
 <q-carousel
       v-model="slide"
       transition-prev="slide-right"
@@ -178,12 +215,13 @@ alert("radio selected");
       animated
       control-color="primary"
       class="rounded-borders"
-      height="560px"
+      height="493px"
       
     >
-    <q-carousel-slide v-for="(question) in questions" :key="question.question_id"  :name="question.question_id" class="column no-wrap"  >
+    
+    <q-carousel-slide v-for="(question, index) in questions" :key="index"  :name="index" class="column no-wrap"  >
 
-      <q-icon name="1" color="primary" size="56px" />
+      <!-- <q-icon name="1" color="primary" size="56px" /> -->
         <div class="q-mt-md text-center" style="font-weight:bold; font-size: medium; font-style: normal;">
          <q-card class="" full width >
     <q-card-section>
@@ -222,16 +260,24 @@ alert("radio selected");
 
     
 </q-carousel>
-<div class="q-pa-sm row justify-center" style="background-color:white">
-      <q-btn-toggle
-        glossy
-        v-model="slide"
-        :options="slideOption"
-      />
-    </div >
+<div class="q-px-xm flex flex-center" style="background-color:white">
+    <q-btn :disable="!slide" @click="slide--" color="primary" icon="keyboard_double_arrow_left">Previous</q-btn>
+    <q-btn :disable="slide==lastvalue" @click="slide++" color="primary" icon-right="keyboard_double_arrow_right">Next</q-btn>
+    </div>
+    <div class="q-px-lg flex" style="background-color:white; place-content: flex-end;">
+  <q-btn label="Finish" @click="submitForm" class="bg-cyan-8 text-grey-1"/>
+   <!-- <q-tooltip
+          transition-show="rotate"
+          transition-hide="rotate"
+        >
+          Attend All Questions And Click Finish
+          </q-tooltip> -->
+  </div>
+<!-- <div class="q-pa-sm row justify-center" style="background-color:white">
+    </div > -->
     
     <br><br>
-    <div class="q-px-sm mybutton" >
+    <!-- <div class="q-px-sm mybutton" >
       
       <q-btn label="Finish" @click="submitForm" class="bg-cyan-8 text-grey-1"> <q-tooltip
           transition-show="rotate"
@@ -239,7 +285,7 @@ alert("radio selected");
         >
           Attend All Questions And Click Finish
         </q-tooltip>
-      </q-btn></div>
+      </q-btn></div> -->
 </div>
 </template>
 
@@ -263,7 +309,7 @@ alert("radio selected");
 </style>
 <style scoped>
 .q-pa-sm {
-  padding: 11px 295px
+  padding: 11px 250px
 }
 .mybutton {
   position: absolute;
