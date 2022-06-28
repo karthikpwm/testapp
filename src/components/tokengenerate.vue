@@ -126,9 +126,10 @@ import moment from 'moment'
       
       const generatetoken = ref()
       const { token,admin,company_id} = storeToRefs( store )
-      const date = ref('')
-      const date1 = ref('')
+      const date = ref(moment().format('YYYY-MM-DD HH:mm '))
+      const date1 = ref(moment().add(30, 'minutes').format('YYYY-MM-DD HH:mm '))
       const mask="YYYY-MM-DD HH:mm"
+      // date-fsn
       //console.log('compid',company_id.value)
       //console.log('orgnltoken',company_id)
       
