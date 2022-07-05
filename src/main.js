@@ -2,7 +2,7 @@
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { Quasar, Loading, Notify } from 'quasar'
+import { Quasar, Loading, Notify, Dialog } from 'quasar'
 import router from './router'
 import store from "./store";
 
@@ -22,7 +22,8 @@ const pinia = createPinia()
 myApp.use(Quasar, {
   plugins: {
     Loading,
-    Notify
+    Notify,
+    Dialog
   },
   config: {
     loading: { /* look at QuasarConfOptions from the API card */ },

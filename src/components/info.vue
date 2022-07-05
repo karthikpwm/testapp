@@ -16,7 +16,7 @@ export default {
     const store_candiate = useCandidateStore()
     const { token} = storeToRefs( store )
     const { candidate_id,testlog_id, company_id } = storeToRefs( store_candiate )
-    console.log(token)
+    //console.log(token)
     const start = () => {
       //  $q.loading.show({
       //     spinner: QSpinnerFacebook,

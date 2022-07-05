@@ -28,7 +28,7 @@ export default {
     const router = useRouter()
     const rows = ref([])
     onMounted(() => {
-      console.log(token)
+      //console.log(token)
 api
           .get(`analytic/getmarks`,
           {
@@ -77,7 +77,7 @@ api
          rows.value = resdata
      }
          })
-         console.log(rows.value)
+         //console.log(rows.value)
     //rows.value = resdata
 
 
@@ -136,9 +136,15 @@ api
          console.log('working')
 
          api
-          .post(`analytic/deletecan`)
-      router.go()
-    }
+        .delete(`analytic/deletecan`, {
+          headers: {
+             Authorization: 'Bearer ' + token.value
+          }
+      }).then(res => { 
+         router.push('/welcome')
+      })
+      
+     }
     }
   },
    methods: {

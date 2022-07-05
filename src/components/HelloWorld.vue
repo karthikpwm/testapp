@@ -88,11 +88,11 @@ export default {
         // // 
         // user ans -> mysql -> 9/10
          //console.log(userAnswers.value)
-      let adata = userAnswers.value
+      //let adata = userAnswers.value
       //console.log(Object.values(adata))
-      let bdata = []
-      bdata = Object.values(adata)
-      console.log(bdata)
+      //let bdata = []
+      //bdata = Object.values(adata)
+      //console.log(bdata)
 //       if (bdata.includes(null) == true) {
 //    console.log("array1 contains null value");
 //    alert("attend all the questions and press finish button")

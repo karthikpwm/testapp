@@ -41,15 +41,16 @@ export default {
        console.log('error')
      } else {
          $q.loading.show({
-          message: 'Doing something. Please wait...',
-          boxClass: 'bg-grey-2 text-grey-9',
-          spinnerColor: 'primary'
+          message: 'Logging In...',
+          boxClass: 'text-white',
+          spinnerColor: 'white',
+          spinnerSize: 60
         })
         api
           .post(`user/login`, {email : login.value.username,password : login.value.password})
           .then(async (res) => {
             
-token.value = res.data.token
+             token.value = res.data.token
              admin.value = res.data.user
              loggedinname.value = res.data.user.name
              company_id.value = res.data.user.company_id
@@ -62,13 +63,25 @@ token.value = res.data.token
              router.push('/user');
           })
           .catch((res) => {
-            timer = setTimeout(() => {
-          $q.loading.hide()
-          timer = void 0
-        }, 2000)
+             $q.loading.hide()
+            $q.dialog({
+        title: 'Alert',
+        message: res.response.data.message
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    
+          // alert(res.response.data.message || 'server not found')
+           
+         
+          
             //$q.loading.hide()
             //console.log(res)
-            alert(res.response.data.message || 'server not found')
+            
           })
      }
    }

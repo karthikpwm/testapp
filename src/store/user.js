@@ -1,23 +1,24 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { api } from '../boot/axios';
-
+const userDefault = {
+    name: '',
+    position: '',
+    email: '',
+    mobile: '',
+    company_id: ''
+}
 export const useUserStore = defineStore("user", () => {
-    const user = ref({
-        name: '',
-        position: '',
-        email: '',
-        mobile: '',
-        company_id: ''
-    })
+    const user = ref(Object.assign({}, userDefault))
 
-    const userType = ref('guest')
+
 
     const admin = ref({
         name: '',
         email: '',
         user_id: '',
-        company_id: ''
+        company_id: '',
+        usertype: ''
     })
     const userAnswers = ref({})
     const questions = ref([])
@@ -25,7 +26,7 @@ export const useUserStore = defineStore("user", () => {
     const loggedinname = ref('')
     const company1_id = ref('')
     const company_id = ref('')
-    console.log("userstore", token, loggedinname)
+    //console.log("userstore", token, loggedinname)
     const insertUser = async (user) => {
         await api.post(`analytic/questions`, { user })
 
@@ -50,7 +51,11 @@ export const useUserStore = defineStore("user", () => {
                 userAnswers.value = userAnswer
             })
     }
+    const setUserDefault = () => {
+        user.value = Object.assign({}, userDefault)
+    }
     return {
+        setUserDefault,
         user,
         questions,
         userAnswers,
@@ -59,7 +64,7 @@ export const useUserStore = defineStore("user", () => {
         loggedinname,
         company1_id,
         company_id,
-        userType,
+
         getQuestion,
         insertUser
     }

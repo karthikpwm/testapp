@@ -27,10 +27,10 @@
        <q-drawer v-if="a"
         v-model="drawer"
         
-        :width="200"
+        :width="230"
         :breakpoint="400"
       >
-        <q-scroll-area style="height: calc(100% - 150px); margin-top: 30px; border-right: 1px solid #ddd">
+        <q-scroll-area style="height: calc(100% - 150px); margin-top: 10px; border-right: 1px solid #ddd">
           <q-list padding>
             <q-item clickable v-ripple to="/welcome">
               <q-item-section avatar>
@@ -51,26 +51,6 @@
                 Result
               </q-item-section>
             </q-item>
-
-            <!-- <q-item clickable v-ripple to="/login">
-              <q-item-section avatar>
-                <q-icon name="send" />
-              </q-item-section>
-
-              <q-item-section>
-                Log Out
-              </q-item-section>
-            </q-item> -->
-
-            <!-- <q-item clickable v-ripple to="/email">
-              <q-item-section avatar>
-                <q-icon name="drafts" />
-              </q-item-section>
-
-              <q-item-section>
-                Email Generate
-              </q-item-section>
-            </q-item> -->
             <q-item clickable v-ripple to="/token">
               <q-item-section avatar>
                 <q-icon name="drafts" />
@@ -80,7 +60,35 @@
                 E-Mail Link
               </q-item-section>
             </q-item>
+            <q-item clickable v-ripple to="/editqstn">
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+
+              <q-item-section>
+               Edit Questions
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-if="arights" v-ripple to="/user">
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+
+              <q-item-section>
+               Start Test
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple to="/signup">
+              <q-item-section avatar>
+                <q-icon name="drafts" />
+              </q-item-section>
+
+              <q-item-section>
+               User Account
+              </q-item-section>
+            </q-item>
           </q-list>
+          
         </q-scroll-area>
 
         
@@ -130,12 +138,23 @@ export default ({
         return true
       }
     })
+    const arights = computed(() => {
+      
+      if(admin.value.usertype === 'admin')
+      {
+        return true
+      } else {
+        return false
+      }
+    })
 
       const logout = () => {
         token.value = '',
         user.value = '',
         admin.value = '',
+       
         //window.location.reload()
+        //store.$reset()
          router.push('/login');
         
       }
@@ -145,7 +164,8 @@ export default ({
       logout,
       adminname,
       drawer,
-      a
+      a,
+      arights
      
       
     }
