@@ -13,13 +13,13 @@
     >
      <template v-slot:top>
           <!-- <q-btn dense color="secondary" label="Add Question" @click="show_dialog = !show_dialog" no-caps></q-btn><br/> -->
-          <!-- <q-btn dense color="secondary" label="Add new Question" @click="show_dialog1 = !show_dialog1" no-caps></q-btn> -->
+          <q-btn dense color="secondary" label="Add new Question" @click="show_dialog1 = !show_dialog1" no-caps></q-btn>
           
         <div class="q-pa-md q-gutter-md">
         <q-dialog v-model="show_dialog">
         <q-card>
           <q-card-section style="width: 623px">
-            <div class="text-h6">Add question</div>
+            <div class="text-h6">Edit question</div>
           </q-card-section>
 
           <q-card-section style="width: 621px">
@@ -42,7 +42,7 @@
           </div>  <br/>
             
         <div class="q-sm q-gutter-md">
-        <q-dialog v-model="show_dialog1">
+        <q-dialog v-model="show_dialog1" @before-show="setDefaultFind()" >
         <q-card>
           <q-card-section style="width: 623px">
             <div class="text-h6">Add new question</div>
@@ -52,11 +52,13 @@
             <div class="row" style="width: 600px">
               <q-input v-model="additem.question" autogrow label="Question" style="width: 400px"></q-input>
               </div>
-            <div class="row" v-for="(additem,index) in finds" :key="index">
-            <q-input v-model="additem.options" autogrow label="options" style="width: 400px"></q-input> 
+              <!-- {{finds}} --><br/>
+            <div class="row" v-for="(_,index) in finds.options" :key="index">
+            <!-- {{finds[index]}} -->
+            <q-input v-model="finds.options[index]" autogrow label="options" style="width: 400px" > </q-input>
             </div>
             <button @click="addnewitem()">
-            New Option
+            Add New Option
             </button>
            <!-- <div class="row"><q-input v-model="editedItem.answeralpha" label="answer"></q-input></div> -->
            <div class="row"  ><q-select style="width: 400px" v-model="additem.answeralpha" :options="answeroptions" label="Answer" emit-value map-options/></div>
@@ -64,7 +66,7 @@
            <div class="row"><q-select style="width: 400px" v-model="additem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div>
           </q-card-section>
           <q-card-actions align="right">
-            <q-btn flat label="OK" color="primary" v-close-popup @click="additem()" ></q-btn>
+            <q-btn flat label="OK" color="primary" v-close-popup @click="addRow()" ></q-btn>
           </q-card-actions>
           </q-card>
     </q-dialog>
@@ -140,7 +142,7 @@ export default {
     var show_dialog = ref(false)
     var show_dialog1 = ref(false)
     var editedIndex = ref(-1)
-    const finds = []
+    const finds = ref({})
     const numberToChar = (number) => {
       if(number === null) {
         return null
@@ -168,14 +170,15 @@ export default {
       }])
       const defaultItem = ref({
         question: '',
-        options: '',
+        options: [],
         answeralpha: '',
-        companynew: '',
+        companynew: null,
+        
       })
       const addnewitem = () => {
-        console.log("looooo")
-        console.log(additem)
-        finds.push({ value: '' })
+        //console.log("looooo")
+        //console.log(additem)
+        finds.value.options.push('')
       }
      const setDefaultItem = () => {
       editedItem.value = ref(Object.assign({}, defaultItem)) 
@@ -183,6 +186,17 @@ export default {
 
      }
     const rows = ref([])
+    const setDefaultFind = () => {
+      
+      //console.log('working', defaultItem.value)
+      finds.value = Object.assign({}, defaultItem.value)
+    }
+    const clearinputvalue = () => {
+       additem.value = Object.assign({}, defaultItem.value)
+      //  finds.value.options.splice(0, options.length)
+      finds.value.options = finds.value.options.splice(0, finds.value.options.length)
+      //console.log(finds.value.options)
+    }
     const getQuestion = () => {
       api
           .get(`analytic/getallqstns`,
@@ -204,7 +218,7 @@ export default {
       val.companynew = 'SHAKTHI'
     }
   })
-  console.log(resdata)
+  //console.log(resdata)
   rows.value = resdata
           })
 
@@ -217,9 +231,9 @@ export default {
  
 const addRow = () => {
     //console.log(editedItem.value)
-    console.log(editedIndex.value)
-    console.log(editedItem.value.answeralpha)
-    console.log(editedItem.value.companynew)
+    //console.log(editedIndex.value)
+    //console.log(editedItem.value.answeralpha)
+    //console.log(editedItem.value.companynew)
    
     // let alphaanswer = editedItem.value.answeralpha
     // alphaanswer = numberToChar(alphaanswer)
@@ -229,23 +243,23 @@ const addRow = () => {
        let changecompany = isNumber(editedItem.value.companynew)
     let newcompany = ref()
     let newanswer = ref()
-    console.log('haaai',changecompany)
+    //console.log('haaai',changecompany)
     if(changecompany == false)
     {
       // newcompany.value = numberToChar(editedItem.value.companynew)
       if(editedItem.value.companynew === 'PWM')
       {
         newcompany.value = 1
-        console.log('pwm coming', newcompany.value)
+       // console.log('pwm coming', newcompany.value)
       }
       else if (editedItem.value.companynew === 'SHAKTHI'){
          newcompany.value = 2
-         console.log('shakthi coming', newcompany.value)
+         //console.log('shakthi coming', newcompany.value)
       }
     }
     else {
      newcompany.value = editedItem.value.companynew
-     console.log('original coming', newcompany.value)
+     //console.log('original coming', newcompany.value)
     }
     let changeanswer = isNumber(editedItem.value.answeralpha)
     if(changeanswer == false){
@@ -286,20 +300,20 @@ const addRow = () => {
            })
     }
     else{
-   let ab = editedItem.value.options
+   let ab = finds.value.options
     // const split_string = ab.split(" ");
     //  console.log(split_string)
      let adc = JSON.stringify(ab)
     // let newanswer = numberToChar(editedItem.value.answeralpha)
-    console.log(adc)
-    api.post('analytic/insertqstn', {question :editedItem.value.question , options:adc, answer : editedItem.value.answeralpha, company_id: editedItem.value.companynew},
+    //console.log(adc)
+    api.post('analytic/insertqstn', {question :additem.value.question ,options:adc,answer : additem.value.answeralpha,company_id: additem.value.companynew},
     {
   headers: {
     Authorization: 'Bearer ' + token.value
   }
 })
 .then(() => {
-  setDefaultItem();
+  clearinputvalue();
   getQuestion();
 })
 .catch((res) => {
@@ -336,13 +350,13 @@ const deleteItem = (item) => {
        
 }
 const editItem = (item) => {
-console.log(item)
+//console.log(item)
       editedIndex.value = rows.value.indexOf(item)
-       console.log(editedIndex)
+       //console.log(editedIndex)
        editedItem.value = Object.assign({}, item);
        
       show_dialog.value = true
-      console.log(editedItem )
+      //console.log(editedItem )
 }
 const close = () => {
    //this.show_dialog = false
@@ -377,6 +391,7 @@ return {
   rows,
   addRow,
   deleteItem,
+  setDefaultFind,
   editItem,
   close,
   numberToChar,
@@ -386,7 +401,9 @@ return {
   defaultItem,
   setDefaultItem,
   isNumber,
+  finds,
   addnewitem,
+  clearinputvalue,
   answeroptions: [
         {
           label: 'A',
