@@ -66,7 +66,7 @@ export default {
              $q.loading.hide()
             $q.dialog({
         title: 'Alert',
-        message: res.response.data.message
+        message: "Server Not Found"
       }).onOk(() => {
         // console.log('OK')
       }).onCancel(() => {

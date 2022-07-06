@@ -6,7 +6,7 @@ import { useUserStore } from '../store/user'
 import { useCandidateStore } from '../store/candidate'
 import { useRoute, useRouter } from 'vue-router'
 import { api } from '../boot/axios';
-import { onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 
 export default {
   data() {
@@ -16,13 +16,6 @@ export default {
     const $q = useQuasar()
     let timer
     // 2 min -> 1 min -> unmo b -> c -> c -> b mo -> ch
-    onBeforeUnmount(() => {
-      if (timer !== void 0) {
-        clearTimeout(timer)
-        $q.loading.hide()
-      }
-      
-    })
     const route = useRoute()
   const router = useRouter()
   // const form = ref(null);
@@ -31,6 +24,13 @@ export default {
     const {user, token, admin,loggedinname} = storeToRefs( store )
     const { candidate_id, company_id } = storeToRefs( store_candiate )
     //console.log("userinfopage",admin.value)
+    store.setUserDefault()
+    onBeforeUnmount(() => {
+      if (timer !== void 0) {
+        clearTimeout(timer)
+        $q.loading.hide()
+      }
+    })
     const onSubmit = () => {
          if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
           //alert('Invalid')
@@ -93,9 +93,9 @@ export default {
 
 <template>
 <div class="page-container window-height row justify-center items-center bg-image" >
-  <div class="q-pa-md row justify-center" style="background-color: white;max-width: 370px; border-radius:25px;" rounded>
-  <div class="col-12 text-center self-center">
-    <h5 class="text-h6 text-uppercase q-my-none" style="font-family:verdana;">Enter Your Details</h5>
+  <div id="blueDIV" class="q-pa-md row justify-center" style="background-color: white;max-width: 355px; border-radius:25px" rounded>
+  <div id="myDIV" class="col-12 text-center self-center" style="border-radius: 10px;">
+    <h6 class="text-h6 text-uppercase q-my-none" style="color: black;">Enter Your Details</h6>
     
   </div>
     
@@ -107,13 +107,7 @@ export default {
       <q-input
         
         v-model="user.name"
-        label="Your name "
-        hint="Name and surname"
-        
-        
-        
-        
-        
+        label="Name "   
       />
 
 
@@ -137,7 +131,7 @@ export default {
         
         type="text"
         v-model="user.email"
-        label="Your email id"
+        label="Your Email "
         
         
       />
@@ -146,14 +140,14 @@ export default {
         
         type="text"
         v-model="user.mobile"
-        label="Your mobile no"
+        label="Your Mobile No"
         
       />
 
       <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
       <div>
-        <q-btn  class="full-width bg-cyan-8 text-grey-1" label="Submit" @click="onSubmit()" rounded/>
+        <q-btn  class="full-width bg-primary text-grey-1" label="Submit" @click="onSubmit()" rounded/>
         <!-- <q-btn label="Start test" @click="goToHome()" color="primary"/> -->
         <!-- <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
       </div>
@@ -170,4 +164,15 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
   }
+  #blueDIV {
+  margin:auto;
+  
+  background-color:lightblue;
+  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+}
+#myDIV {
+
+  background-color:#FFFFFF;
+  /* text-shadow: 1px 0px 30px black; */
+}
 </style>

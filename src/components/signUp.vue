@@ -71,23 +71,24 @@
               <q-input  
                        ref="password"
                        square 
-                       clearable 
+                      
                        v-model="signup.password"                                                        
                        
                        lazy-rules
-                      
+                       
                        label="password">
                 
                 <template v-slot:prepend>
                   <q-icon name="lock" />
                 </template>
-                <template v-slot:append>
-              <q-icon 
-                                              
+                 
+                <!-- <template v-slot:append>
+              <q-icon
+                                       
                    class="cursor-pointer" />
-                </template>
+                </template> -->
               </q-input>
-              <q-input 
+              <!-- <q-input 
                   ref="company"
                   
                   square 
@@ -105,7 +106,8 @@
                                              
                   class="cursor-pointer" />
           </template>
-              </q-input>
+              </q-input> -->
+              <q-select  v-model="signup.company" :options="companyoptions" label="Company" emit-value map-options/>
             </q-form>
           </q-card-section>
 
@@ -139,42 +141,63 @@
           <q-tab-panel name="alarms">
             <!-- <div class="text-h6">Alarms</div> -->
             <div class="q-pa-sm">
+              <div class="q-pa-md q-gutter-md">
+        <q-dialog v-model="show_dialog">
+        <q-card class="qcard">
+          <q-card-section style="width: 623px">
+            <div class="text-h6">Edit Details</div>
+          </q-card-section>
+
+          <q-card-section style="width: 621px">
+            <div class="row">
+              <q-input v-model="editedItem.email" autogrow label="Email" style="width: 200px"></q-input>
+              </div>
+            <div class="row">
+            <q-input v-model="editedItem.name" autogrow label="Username" style="width: 200px"></q-input> 
+            </div>
+           <div class="row"><q-input v-model="editedItem.newpassword" type="password" label="Password" style="width: 200px"></q-input></div>
+           <!-- <div class="row"  ><q-select style="width: 400px" v-model="editedItem.answeralpha" :options="answeroptions" label="Answer" emit-value map-options/></div> -->
+           <!-- <div class="row"><q-input v-model="editedItem.company_id" label="company"></q-input></div> -->
+           <div class="row"><q-input disable style="width: 200px" v-model="editedItem.company_id"  label="Company" /></div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Save" color="primary" v-close-popup @click="addRow()" ></q-btn>
+          </q-card-actions>
+          </q-card>
+    </q-dialog>
+          </div>
     <q-table
       class="my-sticky-header-column-table"
       title="User Details"
       :rows="rows"
       :columns="columns"
       row-key="name"
+      :filter="filter"
+      :filter-method="myfilterMethod()"
     >
     <template v-slot:body="props">
         <q-tr :props="props">
          <q-td key="name" :props="props">
             {{ props.row.name }}
-            <q-popup-edit v-model="props.row.name" v-slot="scope">
+            <!-- <q-popup-edit v-model="props.row.name" v-slot="scope">
               <q-input type="textarea" v-model="scope.value" dense autofocus  />
-            </q-popup-edit>
+            </q-popup-edit> -->
           </q-td>
           <q-td key="email" :props="props">
             {{ props.row.email }}
-            <q-popup-edit v-model="props.row.email" title="Update Options" buttons v-slot="scope">
-              <q-input v-model="scope.value" dense autofocus />
-            </q-popup-edit>
+            
           </q-td>
           <q-td key="password" :props="props">
             {{ props.row.password }}
-            <q-popup-edit v-model="props.row.password" v-slot="scope">
-              <q-input type="textarea" v-model="scope.value" dense autofocus />
-            </q-popup-edit>
+            
           </q-td>
           <q-td key="company" :props="props">
             {{ props.row.company_id }}
-            <q-popup-edit v-model="props.row.company_id" title="Update Company" buttons persistent v-slot="scope">
-              <q-input type="number" v-model="scope.value" dense autofocus hint="Use buttons to close" />
-            </q-popup-edit>
+            
           </q-td>
           <q-td key="actions" :props="props" style="width:131px">
               <q-btn color="blue"  icon="edit"  @click="editItem(props.row)" size=sm no-caps></q-btn>
-              <q-btn color="red" icon="delete_forever" :disable="!arights"  @click="deleteItem(props.row)" size=sm no-caps></q-btn>
+              <q-btn color="red" icon="delete_forever" :disable="!deltrights || props.row.usertype === 'admin'"  @click="deleteItem(props.row)" size=sm no-caps></q-btn>
             </q-td>
           <!-- <q-td key="protein" :props="props">{{ props.row.protein }}</q-td>
           <q-td key="sodium" :props="props">{{ props.row.sodium }}</q-td>
@@ -192,6 +215,9 @@
   </div>
 </template>
 <style scoped>
+.qcard {
+  max-width:625px
+}
 .row{
   justify-content:center
 }
@@ -266,10 +292,20 @@ export default {
         return false
       }
     })
+    const deltrights = computed( () => {
+      if(admin.value.usertype === 'user')
+      {
+        return false
+      }
+      else {
+        return true
+      }
+    })
     const store = useUserStore()
     const { token,admin} = storeToRefs( store )
     const $q = useQuasar()
     const rows = ref([])
+    const show_dialog = ref(false)
     const signup = ref({
       email: '',
     username: '',
@@ -278,18 +314,73 @@ export default {
     usertype: ''
   })
   const defaultValue = ref( {
-    email : '',
+    email : null,
     username : '',
-    password: '',
+    password: null,
     company: '',
-    usertype: ''
+    usertype: '',
+    newpassword: ''
   })
+  var editedItem = ref([ {
+        email: '',
+        name: '',
+        password: '',
+        company_id: '',
+        newpassword:''
+      }])
   const setDefaultValue = () => {
       signup.value = ref(Object.assign({}, defaultValue)) 
-      
+      console.log(signup.value)
 
      }
-  console.log(admin)
+     const addRow = () => {
+      if(editedItem.value.newpassword != '' && editedItem.value.newpassword != undefined)
+      {
+      //console.log(editedItem.value.newpassword)
+      api.put(`user/editpassword/${editedItem.value.user_id}`,{name :editedItem.value.name ,password:editedItem.value.newpassword ,email :editedItem.value.email ,company_id:editedItem.value.company_id},
+      {
+        headers: {
+     Authorization: 'Bearer ' + token.value
+   }
+      }).then(res => {
+        getUserDetails()
+        console.log(res)
+      }) 
+      } else {
+        alert('Password Can not be Empty')
+      }
+     }
+     const editItem = (item) => {
+//console.log('haa',item)
+
+      //editedIndex.value = rows.value.indexOf(item)
+       //console.log(editedIndex)
+       editedItem.value = Object.assign({}, item);
+       
+      show_dialog.value = true
+      //console.log(editedItem )
+}
+const deleteItem = (item) => {
+  editedItem.value = Object.assign({}, item);
+ // const index = data.indexOf(item);
+      confirm("Are you sure you want to delete this user?") &&
+       api.delete(`user/deleteuser/${editedItem.value.user_id }`,
+       {
+   headers: {
+     Authorization: 'Bearer ' + token.value
+   }
+ }).then((res) => {
+getUserDetails()
+ console.log(res)
+ })
+ .catch((res) => {
+           
+             console.log(res)
+            
+           })
+
+}
+  //console.log(admin)
   const submitForm =  () => { 
     console.log('hai')
    if (!signup.value.username ||!signup.value.password || !signup.value.email || !signup.value.company){
@@ -326,30 +417,41 @@ api
   }
 })
           .then(async (res) => {
-            
-  let resdata = res.data.data
-  
-  console.log(resdata)
-  rows.value = resdata
+ let resdata = res.data.data
+           //console.log(admin) 
+           if(admin.value.usertype == 'admin')
+           {
+             rows.value = resdata
+           }
+ else {
+ var result=resdata.filter(obj=> obj.user_id == admin.value.user_id);
+console.log(result);
+
+  rows.value = result
+ }
           })
   }
   onMounted(() => {
       getUserDetails()
   
   })
+  const myfilterMethod = () => {
+    console.log(rows.value)
+
+  }
   const columns = [
   {
     name: 'name',
     required: true,
-    label: 'USER NAME',
+    label: 'Username',
     align: 'left',
     field: row => row.name,
     format: val => `${val}`,
     sortable: true
   },
   { name: 'email', align: 'center', label: 'E-Mail', field: 'email', sortable: true },
-  { name: 'password', label: 'PASSWORD', field: 'password', sortable: true },
-  { name: 'company', label: 'COMPANY', field: 'comapany_id' },
+  // { name: 'password', label: 'PASSWORD', field: 'password', sortable: true },
+  { name: 'company', label: 'Company', field: 'comapany_id' },
  {
           name: "actions",
           label: "Actions",
@@ -360,13 +462,31 @@ api
     return {
       signup,
       submitForm,
-      tab: ref('mails'),
+      isPwd: ref(true),
+      tab: ref('alarms'),
       columns,
       rows,
       arights,
+      deltrights,
       defaultValue,
       setDefaultValue,
-      getUserDetails
+      getUserDetails,
+      show_dialog,
+      editItem,
+      addRow,
+      editedItem,
+      myfilterMethod,
+      deleteItem,
+      companyoptions: [
+        {
+          label: 'PWM',
+          value: '1'
+        },
+        {
+          label: 'SHAKTHI',
+          value: '2'
+        }
+      ]
     }
   }
 }

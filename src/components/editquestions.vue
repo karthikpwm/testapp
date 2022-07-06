@@ -13,7 +13,7 @@
     >
      <template v-slot:top>
           <!-- <q-btn dense color="secondary" label="Add Question" @click="show_dialog = !show_dialog" no-caps></q-btn><br/> -->
-          <q-btn dense color="secondary" label="Add new Question" @click="show_dialog1 = !show_dialog1" no-caps></q-btn>
+          <q-btn dense color="primary" label="Add new Question" @click="show_dialog1 = !show_dialog1" no-caps></q-btn>
           
         <div class="q-pa-md q-gutter-md">
         <q-dialog v-model="show_dialog">
@@ -35,48 +35,49 @@
            <div class="row"><q-select style="width: 400px" v-model="editedItem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div>
           </q-card-section>
           <q-card-actions align="right">
-            <q-btn flat label="OK" color="primary" v-close-popup @click="addRow()" ></q-btn>
+            <q-btn flat label="SAVE" color="primary" v-close-popup @click="addRow()" ></q-btn>
           </q-card-actions>
           </q-card>
     </q-dialog>
           </div>  <br/>
             
-        <div class="q-sm q-gutter-md">
+        <div class="q-pa-sm q-gutter-md">
         <q-dialog v-model="show_dialog1" @before-show="setDefaultFind()" >
-        <q-card>
+        <q-card class="qcard row justify-center">
           <q-card-section style="width: 623px">
-            <div class="text-h6">Add new question</div>
+            <div class="text-h6">Add New Question</div>
           </q-card-section>
 
           <q-card-section style="width: 621px">
-            <div class="row" style="width: 600px">
-              <q-input v-model="additem.question" autogrow label="Question" style="width: 400px"></q-input>
+            <div class="row justify-center" style="width: 600px">
+              <q-input v-model="additem.question" autogrow label="Question" style="width: 360px"></q-input>
               </div>
               <!-- {{finds}} --><br/>
-            <div class="row" v-for="(_,index) in finds.options" :key="index">
+            <div class="row justify-center" v-for="(_,index) in finds.options" :key="index">
             <!-- {{finds[index]}} -->
-            <q-input v-model="finds.options[index]" autogrow label="options" style="width: 400px" > </q-input>
+            <q-input v-model="finds.options[index]" autogrow label="Options" style="width: 350px" > </q-input>
             </div>
-            <button @click="addnewitem()">
-            Add New Option
-            </button>
+            <div class="row justify-center" style="padding-top:3px">
+            <q-btn color="primary" @click="addnewitem()" >
+            Add Option
+            </q-btn></div>
            <!-- <div class="row"><q-input v-model="editedItem.answeralpha" label="answer"></q-input></div> -->
-           <div class="row"  ><q-select style="width: 400px" v-model="additem.answeralpha" :options="answeroptions" label="Answer" emit-value map-options/></div>
+           <div class="row justify-center"  ><q-select style="width: 250px" v-model="additem.answeralpha" :options="answeroptions" label="Answer" emit-value map-options/></div>
            <!-- <div class="row"><q-input v-model="editedItem.company_id" label="company"></q-input></div> -->
-           <div class="row"><q-select style="width: 400px" v-model="additem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div>
+           <div class="row justify-center"><q-select style="width: 250px" v-model="additem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div>
           </q-card-section>
           <q-card-actions align="right">
-            <q-btn flat label="OK" color="primary" v-close-popup @click="addRow()" ></q-btn>
+            <q-btn flat label="SAVE" color="primary" v-close-popup @click="addRow()" ></q-btn>
           </q-card-actions>
           </q-card>
     </q-dialog>
           </div>
           
       </template>
-      <template v-slot:top-right>
+      <!-- <template v-slot:top-right>
        <q-btn dense color="secondary" label="Add new Question" @click="show_dialog1 = !show_dialog1" no-caps></q-btn>
         
-      </template>
+      </template> -->
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="question" :props="props">
@@ -187,9 +188,10 @@ export default {
      }
     const rows = ref([])
     const setDefaultFind = () => {
-      
+       additem.value = Object.assign({}, defaultItem.value)
       //console.log('working', defaultItem.value)
       finds.value = Object.assign({}, defaultItem.value)
+      finds.value.options = finds.value.options.splice(0, finds.value.options.length)
     }
     const clearinputvalue = () => {
        additem.value = Object.assign({}, defaultItem.value)
@@ -333,7 +335,7 @@ const addRow = () => {
 const deleteItem = (item) => {
   editedItem.value = Object.assign({}, item);
  // const index = data.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
+      confirm("Are you sure you want to delete this question?") &&
        api.delete(`analytic/deleteqstn/${editedItem.value.question_id }`,
        {
    headers: {
@@ -438,3 +440,8 @@ return {
 
 }
 </script>
+<style scoped>
+.qcard {
+  max-width:625px
+}
+</style>
