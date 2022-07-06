@@ -148,7 +148,7 @@ import moment from 'moment'
   }
 }) 
         .then(async (res) => {
-        generatetoken.value ="https://fathomless-woodland-86572.herokuapp.com/token/test/" + res.data.token 
+        generatetoken.value ="https://fast-citadel-20623.herokuapp.com/token/test/" + res.data.token 
         //  applicant.name.value = generatetoken
          
          //console.log('newtoken',generatetoken.value)
