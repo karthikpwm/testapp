@@ -427,7 +427,7 @@ export default {
    }
       }).then(res => {
         getUserDetails()
-        //console.log(res)
+        console.log(res)
       }) 
       } else {
         alert('Password Can not be Empty')
@@ -483,10 +483,10 @@ getUserDetails()
           }).then(async (res) => {
             getUserDetails()
            setDefaultValue()
-            //console.log(res)
+            console.log(res)
 
           }).catch( (res) => {
-           // console.log(res)
+            console.log(res)
           })
      }
   }
@@ -500,10 +500,10 @@ getUserDetails()
    }
           }
       ).then((res)=> {
-        //console.log(res)
+        console.log(res)
         setcompdefault();
       }).catch((res) => {
-        //console.log(res)
+        console.log(res)
       })
     }
     else {
