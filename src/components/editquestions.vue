@@ -32,7 +32,7 @@
            <!-- <div class="row"><q-input v-model="editedItem.answeralpha" label="answer"></q-input></div> -->
            <div class="row"  ><q-select style="width: 400px" v-model="editedItem.answeralpha" :options="answeroptions" label="Answer" emit-value map-options/></div>
            <!-- <div class="row"><q-input v-model="editedItem.company_id" label="company"></q-input></div> -->
-           <div class="row"><q-select style="width: 400px" v-model="editedItem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div>
+           <!-- <div class="row"><q-select style="width: 400px" v-model="editedItem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div> -->
           </q-card-section>
           <q-card-actions align="right">
             <q-btn flat label="SAVE" color="primary" v-close-popup @click="addRow()" ></q-btn>
@@ -64,7 +64,7 @@
            <!-- <div class="row"><q-input v-model="editedItem.answeralpha" label="answer"></q-input></div> -->
            <div class="row justify-center"  ><q-select style="width: 250px" v-model="additem.answeralpha" :options="answeroptions" label="Answer" emit-value map-options/></div>
            <!-- <div class="row"><q-input v-model="editedItem.company_id" label="company"></q-input></div> -->
-           <div class="row justify-center"><q-select style="width: 250px" v-model="additem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div>
+           <!-- <div class="row justify-center"><q-select style="width: 250px" disable v-model="additem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div> -->
           </q-card-section>
           <q-card-actions align="right">
             <q-btn flat label="SAVE" color="primary" v-close-popup @click="addRow()" ></q-btn>
@@ -121,6 +121,7 @@
 <script>
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '../store/user'
+import { useCompanyStore } from '../store/company'
 import {onMounted, ref } from 'vue'
 import { api } from '../boot/axios';
 import { useRouter } from 'vue-router'
@@ -138,7 +139,9 @@ export default {
 },
   setup () {
     const store = useUserStore()
-    const { token} = storeToRefs( store )
+    const store2 = useCompanyStore()
+    const { token,admin} = storeToRefs( store )
+    const {company} = storeToRefs(store2)
     const router = useRouter()
     var show_dialog = ref(false)
     var show_dialog1 = ref(false)
@@ -212,16 +215,18 @@ export default {
   let resdata = res.data.data
   resdata.map(function(val) {
     val.answeralpha = numberToChar(val.answer)
-    if(val.company_id == 1)
-    {
-      val.companynew = 'PWM'
-    }
-    else {
-      val.companynew = 'SHAKTHI'
-    }
+    
+      val.companynew = company.value.name
+    
+      
+    
   })
   //console.log(resdata)
-  rows.value = resdata
+    var result=resdata.filter(obj=> obj.company_id == admin.value.company_id);
+ //console.log(result);
+ //console.log(company.value.name)
+  //rows.value = resdata
+  rows.value = result
           })
 
     }
@@ -287,7 +292,7 @@ const addRow = () => {
     {
       newanswer.value = editedItem.value.answeralpha
     }
-      api.put(`analytic/editqstn/${editedItem.value.question_id }`, {question : editedItem.value.question,options: editedItem.value.options, answer: newanswer.value,company_id:newcompany.value},
+      api.put(`analytic/editqstn/${editedItem.value.question_id }`, {question : editedItem.value.question,options: editedItem.value.options, answer: newanswer.value,company_id:admin.value.company_id},
       {
    headers: {
      Authorization: 'Bearer ' + token.value
@@ -297,18 +302,25 @@ const addRow = () => {
   getQuestion();
  }).catch((res) => {
            
-             console.log(res)
+            // console.log(res)
             
            })
     }
     else{
-   let ab = finds.value.options
+     let ab = finds.value.options
+     let up =  ab.lastIndexOf("")
+     //console.log(up)
+      if( additem.value.question != '' && up == -1 && additem.value.answeralpha != '' )
+      {
+   
+   
+   
     // const split_string = ab.split(" ");
     //  console.log(split_string)
      let adc = JSON.stringify(ab)
     // let newanswer = numberToChar(editedItem.value.answeralpha)
-    //console.log(adc)
-    api.post('analytic/insertqstn', {question :additem.value.question ,options:adc,answer : additem.value.answeralpha,company_id: additem.value.companynew},
+    //console.log(additem.value)
+    api.post('analytic/insertqstn', {question :additem.value.question ,options:adc,answer : additem.value.answeralpha,company_id: admin.value.company_id},
     {
   headers: {
     Authorization: 'Bearer ' + token.value
@@ -320,10 +332,15 @@ const addRow = () => {
 })
 .catch((res) => {
             
-            console.log(res)
+            //console.log(res)
             
           })
     }
+    else {
+      alert('Empty Fields are not allowed')
+    }
+    }
+    
 //       if (editedIndex > -1) {
 //         Object.assign(this.data[editedIndex], editedItem);
 //       } else {
@@ -345,8 +362,8 @@ const deleteItem = (item) => {
   getQuestion();
  })
  .catch((res) => {
-           
-             console.log(res)
+            
+             //console.log(res)
             
            })
        

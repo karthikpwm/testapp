@@ -7,16 +7,68 @@
         narrow-indicator
         class="q-mb-lg"
       >
+      <q-tab class="text-orange" name="alarms" label="Manage Accounts" />
+      <q-tab class="text-red" name="comp" label="New Company" />
         <q-tab class="text-purple" name="mails" label="Sign Up" />
-        <q-tab class="text-orange" name="alarms" label="Manage Accounts" />
-       
       </q-tabs>
 
       <div class="q-gutter-y-sm" >
         <q-tab-panels
           v-model="tab"
           v-if="arights"
-          animated
+         
+          transition-prev="scale"
+          transition-next="scale"
+          class="bg-white text-white text-center"
+        >
+          <q-tab-panel name="comp">
+            <div class="row">
+              <q-card square class="shadow-24" style="width:320px;height:350px;">
+          <q-card-section class="bg-red-4" style="height;:85px">
+            <h4 class="text-h5 text-white q-my-md">Registration</h4>
+          
+          </q-card-section>
+          <q-card-section>
+          <!-- <q-fab
+          color="primary" @click="switchTypeForm"
+          icon="add"
+          class="absolute"
+          style="top: 0; right: 12px; transform: translateY(-50%);"
+        >
+          <q-tooltip>
+          
+        </q-tooltip>
+        </q-fab> -->
+            <q-form class="q-px-sm q-pt-xl" @submit.prevent="submitnewcomp">
+             <q-input 
+                       ref="company"
+                       square 
+                       clearable 
+                       v-model="createcompany" 
+                       
+                       lazy-rules
+                       
+                       label="Company Name">
+                
+              </q-input>
+            <q-card-actions class="sign1">
+            <q-btn  
+                   size="md" 
+                   color="primary"
+                   @click="submitnewcomp"
+                   class="text-white"                         
+                    label="Register" />
+          </q-card-actions>
+            </q-form>
+            </q-card-section>
+            </q-card>
+            </div>
+            </q-tab-panel>
+            </q-tab-panels>
+        <q-tab-panels
+          v-model="tab"
+          v-if="arights"
+          
           transition-prev="scale"
           transition-next="scale"
           class="bg-white text-white text-center"
@@ -24,7 +76,7 @@
           <q-tab-panel name="mails">
             <!-- <div class="text-h6">Create New User</div> -->
             <div class="row ">
-        <q-card square class="shadow-24" style="width:400px;height:480px;">
+        <q-card square class="shadow-24" style="width:350px;height:450px;">
           <q-card-section class="bg-deep-purple-7">
             <h4 class="text-h5 text-white q-my-md">New User</h4>
            
@@ -107,7 +159,7 @@
                   class="cursor-pointer" />
           </template>
               </q-input> -->
-              <q-select  v-model="signup.company" :options="companyoptions" label="Company" emit-value map-options/>
+              <q-select  v-model="signup.company" :options="allcompdet" label="Company" emit-value map-options/>
             </q-form>
           </q-card-section>
 
@@ -155,7 +207,15 @@
             <div class="row">
             <q-input v-model="editedItem.name" autogrow label="Username" style="width: 200px"></q-input> 
             </div>
-           <div class="row"><q-input v-model="editedItem.newpassword" type="password" label="Password" style="width: 200px"></q-input></div>
+           <div class="row"><q-input v-model="editedItem.newpassword" :type="isPwd ? 'password' : 'text'" label="Password" style="width: 200px">
+            <template v-slot:append>
+          <q-icon
+            :name="isPwd ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+           </q-input></div>
            <!-- <div class="row"  ><q-select style="width: 400px" v-model="editedItem.answeralpha" :options="answeroptions" label="Answer" emit-value map-options/></div> -->
            <!-- <div class="row"><q-input v-model="editedItem.company_id" label="company"></q-input></div> -->
            <div class="row"><q-input disable style="width: 200px" v-model="editedItem.company_id"  label="Company" /></div>
@@ -218,17 +278,27 @@
 .qcard {
   max-width:625px
 }
+.rowd{
+  justify-content:center
+}
 .row{
   justify-content:center
 }
 .q-pt-xl {
-    padding-top: 20px;
+    padding-top: 44px;
 }
+
 .q-px-sm {
+  width: 335px;
     padding-left: 73px;
     padding-right: 74px;
 }
 .sign{
+    padding-left: 55px;
+    padding-right: 68px;
+}
+.sign1{
+   padding-top: 30px;
     padding-left: 55px;
     padding-right: 68px;
 }
@@ -277,6 +347,8 @@
 <script>
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '../store/user'
+import { useCompanyStore } from '../store/company'
+
 import { onMounted,ref,computed } from 'vue'
 import { useQuasar } from 'quasar'
 import { api } from '../boot/axios';
@@ -302,10 +374,14 @@ export default {
       }
     })
     const store = useUserStore()
+    const store2 = useCompanyStore()
     const { token,admin} = storeToRefs( store )
+    const {company} = storeToRefs(store2)
     const $q = useQuasar()
     const rows = ref([])
+    const allcompdet = ref([])
     const show_dialog = ref(false)
+    const createcompany = ref()
     const signup = ref({
       email: '',
     username: '',
@@ -321,6 +397,9 @@ export default {
     usertype: '',
     newpassword: ''
   })
+  // const compdefault = ref (
+  //   createcompany = null
+  // )
   var editedItem = ref([ {
         email: '',
         name: '',
@@ -330,8 +409,11 @@ export default {
       }])
   const setDefaultValue = () => {
       signup.value = ref(Object.assign({}, defaultValue)) 
-      console.log(signup.value)
+      //console.log(signup.value)
 
+     }
+     const setcompdefault = () => {
+       createcompany.value = ''
      }
      const addRow = () => {
       if(editedItem.value.newpassword != '' && editedItem.value.newpassword != undefined)
@@ -344,7 +426,7 @@ export default {
    }
       }).then(res => {
         getUserDetails()
-        console.log(res)
+        //console.log(res)
       }) 
       } else {
         alert('Password Can not be Empty')
@@ -371,26 +453,26 @@ const deleteItem = (item) => {
    }
  }).then((res) => {
 getUserDetails()
- console.log(res)
+ //console.log(res)
  })
  .catch((res) => {
            
-             console.log(res)
+            // console.log(res)
             
            })
 
 }
   //console.log(admin)
   const submitForm =  () => { 
-    console.log('hai')
+    
    if (!signup.value.username ||!signup.value.password || !signup.value.email || !signup.value.company){
       $q.notify({
          type: 'negative',
           message: 'Fill Required Fields' }
       )
-       console.log('error')
+       
      } else {
-      console.log(signup.value.username)
+      //console.log(signup.value.username)
            api
           .post(`user/register`,{name : signup.value.username, email: signup.value.email, password:signup.value.password , company_id :signup.value.company, usertype:'user'},
           {
@@ -400,12 +482,33 @@ getUserDetails()
           }).then(async (res) => {
             getUserDetails()
            setDefaultValue()
-            console.log(res)
+            //console.log(res)
 
           }).catch( (res) => {
-            console.log(res)
+           // console.log(res)
           })
      }
+  }
+  const submitnewcomp = () => {
+    if(createcompany.value != '' && createcompany.value != undefined)
+    {
+      api.post('user/createcompany',{name : createcompany.value },
+      {
+             headers: {
+     Authorization: 'Bearer ' + token.value
+   }
+          }
+      ).then((res)=> {
+        //console.log(res)
+        setcompdefault();
+      }).catch((res) => {
+        //console.log(res)
+      })
+    }
+    else {
+      alert('Empty Field')
+    }
+    // console.log(createcompany.value)
   }
   const getUserDetails = () => {
         //console.log(token)
@@ -425,18 +528,44 @@ api
            }
  else {
  var result=resdata.filter(obj=> obj.user_id == admin.value.user_id);
-console.log(result);
+   //console.log(result);
 
   rows.value = result
  }
           })
   }
+  const getcompdetails = () => {
+    api.get("user/getcompdetails",
+    {
+  headers: {
+    Authorization: 'Bearer ' + token.value
+  }
+})
+      .then(res => {
+        allcompdet.value = res.data.data.map((x) => { 
+        
+        return {'label' : x.name, 'value' : x.company_id }
+      })
+        //allcompdet.value = res.data.data
+       //company.value = allcompdet.value
+//         var inner = res.data.data.map(function(e) {
+//   return e;
+// });
+
+//     //console.log(inner);
+//     company.value = inner
+//         console.log(company.value)
+      }).catch((res) => {
+        //console.log(res)
+      })
+  }
   onMounted(() => {
-      getUserDetails()
+      getUserDetails();
+      getcompdetails();
   
   })
   const myfilterMethod = () => {
-    console.log(rows.value)
+    //console.log(rows.value)
 
   }
   const columns = [
@@ -462,6 +591,8 @@ console.log(result);
     return {
       signup,
       submitForm,
+      submitnewcomp,
+      createcompany,
       isPwd: ref(true),
       tab: ref('alarms'),
       columns,
@@ -470,6 +601,8 @@ console.log(result);
       deltrights,
       defaultValue,
       setDefaultValue,
+      // compdefault,
+      setcompdefault,
       getUserDetails,
       show_dialog,
       editItem,
@@ -477,6 +610,8 @@ console.log(result);
       editedItem,
       myfilterMethod,
       deleteItem,
+      getcompdetails,
+      allcompdet,
       companyoptions: [
         {
           label: 'PWM',

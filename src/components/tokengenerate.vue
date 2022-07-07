@@ -5,7 +5,7 @@
 </div>
 
   <div class="page-container window- row justify-center flex items-center" style="background-color:white;">
-    <div class="row justify center" style="max-width: 520px">
+    <div class="row justify center" style="max-width: 570px">
     
       <!-- <div class="name" 
       v-for="(applicant, counter) in applicants"
@@ -155,7 +155,7 @@ import moment from 'moment'
         })
          .catch((res) => {
             
-            console.log(res)
+            //console.log(res)
             alert(res.data || 'server not found')
           })
       }

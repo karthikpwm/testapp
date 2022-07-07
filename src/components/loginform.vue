@@ -3,7 +3,7 @@ import { useQuasar } from 'quasar'
 import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '../store/user'
-
+import { useCompanyStore } from '../store/company'
 import { api } from '../boot/axios';
 import { useRoute, useRouter } from 'vue-router'
 
@@ -14,8 +14,9 @@ export default {
   setup () { 
     const $q = useQuasar()
         const store = useUserStore()
+        const store2 = useCompanyStore()
     const {token, admin,loggedinname,company_id,user} = storeToRefs( store )
-  
+    const {company} = storeToRefs(store2)
   const router = useRouter()
   const login = ref({
     username: '',
@@ -38,7 +39,7 @@ export default {
          type: 'negative',
           message: 'Username or Password is Incorrect' }
       )
-       console.log('error')
+       //console.log('error')
      } else {
          $q.loading.show({
           message: 'Logging In...',
@@ -51,6 +52,7 @@ export default {
           .then(async (res) => {
             
              token.value = res.data.token
+             company.value = res.data.companydetail
              admin.value = res.data.user
              loggedinname.value = res.data.user.name
              company_id.value = res.data.user.company_id
@@ -59,8 +61,14 @@ export default {
              //console.log(token.value)
              
           $q.loading.hide()
+          if(admin.value.usertype === 'admin')
+          {
+            router.push('/signup')
+          } else {
+            router.push('/cresult');
           
-             router.push('/user');
+          }
+             
           })
           .catch((res) => {
              $q.loading.hide()

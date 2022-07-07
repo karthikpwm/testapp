@@ -3,7 +3,7 @@
   <div class="q-pa-lg row items-start q-gutter-md" >
   <q-card dark bordered class="child">
       <q-card-section>
-        <div class="text-h6" >Thanks, We wiil Get Back To You</div>
+        <div class="text-h6" >Thanks, We will Get Back To You</div>
         
       </q-card-section>
 

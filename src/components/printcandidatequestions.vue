@@ -43,7 +43,7 @@ export default {
     const candname = ref()
     onMounted(() => {
       let cid = getCurrentInstance().data.candidateId
-      console.log(cid)
+      //console.log(cid)
  api
           .get(`analytic/printcanquestions/${cid}`)
           .then(async (res) => {

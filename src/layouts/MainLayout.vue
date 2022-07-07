@@ -32,7 +32,7 @@
       >
         <q-scroll-area style="height: calc(100% - 150px); margin-top: 10px; border-right: 1px solid #ddd">
           <q-list padding>
-            <q-item clickable v-ripple to="/welcome">
+            <q-item clickable v-if="!arights" v-ripple to="/cresult">
               <q-item-section avatar>
                 <q-icon name="inbox" />
               </q-item-section>
@@ -42,7 +42,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item active clickable v-ripple to="/cresult">
+            <!-- <q-item active clickable v-ripple to="/cresult">
               <q-item-section avatar>
                 <q-icon name="star" />
               </q-item-section>
@@ -50,8 +50,8 @@
               <q-item-section>
                 Result
               </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple to="/token">
+            </q-item> -->
+            <q-item clickable v-if="!arights" v-ripple to="/token">
               <q-item-section avatar>
                 <q-icon name="drafts" />
               </q-item-section>
@@ -60,7 +60,7 @@
                 E-Mail Link
               </q-item-section>
             </q-item>
-            <q-item clickable v-ripple to="/editqstn">
+            <q-item clickable v-if="!arights" v-ripple to="/editqstn">
               <q-item-section avatar>
                 <q-icon name="drafts" />
               </q-item-section>
@@ -69,7 +69,7 @@
                Edit Questions
               </q-item-section>
             </q-item>
-            <q-item clickable v-if="arights" v-ripple to="/user">
+            <q-item clickable v-if="!arights" v-ripple to="/user">
               <q-item-section avatar>
                 <q-icon name="drafts" />
               </q-item-section>

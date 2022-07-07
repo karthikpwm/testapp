@@ -25,7 +25,7 @@ export default ({
         .then( res => {
           verify.value = true
          company_id.value = res.data.verify.company_id
-          console.log(verify,company_id, 'working')
+          //console.log(verify,company_id, 'working')
         })
         .catch(res => {
           console.log(res)

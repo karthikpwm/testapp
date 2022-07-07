@@ -34,7 +34,7 @@ export default {
     const onSubmit = () => {
          if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
           //alert('Invalid')
-           console.log('nooo')
+           //console.log('nooo')
            $q.notify({
           type: 'negative',
           message: 'Must Enter All Fields.'
@@ -60,7 +60,7 @@ export default {
               candidate_id.value = res.data.insert_id
               company1_id.value = company_id.value
              token.value = res.data.token
-             console.log(candidate_id.value)
+             //console.log(candidate_id.value)
             $q.loading.hide()
          router.push('/guestinfo')  
 

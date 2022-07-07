@@ -160,7 +160,7 @@ export default {
       finish,
   
         submitForm() {
-        console.log('refBaseTimer',refBaseTimer.value)
+        //console.log('refBaseTimer',refBaseTimer.value)
         timePassed.value = refBaseTimer.value.stopTimer()
         finish();
       },

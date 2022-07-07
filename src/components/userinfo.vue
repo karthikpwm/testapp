@@ -34,7 +34,7 @@ export default {
     const onSubmit = () => {
          if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
           //alert('Invalid')
-           console.log('nooo')
+           
            $q.notify({
           type: 'negative',
           message: 'Must Enter All Fields.'

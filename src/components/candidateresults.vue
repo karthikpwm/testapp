@@ -1,6 +1,6 @@
 <template>
 <div class="q-pa-sm row justify-center">
-    <q-btn  @click="deletecan()" color="primary" label="delete"/>
+    <!-- <q-btn  @click="deletecan()" color="primary" label="delete"/> -->
   </div>
   <div class="q-pa-md">
     <q-table
@@ -24,7 +24,7 @@ import { useRouter } from 'vue-router'
 export default {
   setup () {
     const store = useUserStore()
-    const { token} = storeToRefs( store )
+    const { token,admin} = storeToRefs( store )
     const router = useRouter()
     const rows = ref([])
     onMounted(() => {
@@ -74,7 +74,9 @@ api
        
       val.timetaken = `${minutes}:${seconds}`;
          //console.log('sum',val.timetaken,resdata)
-         rows.value = resdata
+         var result = resdata.filter(obj=> obj.company_id == admin.value.company_id);
+ //console.log(result);
+        rows.value = result
      }
          })
          //console.log(rows.value)
@@ -133,7 +135,7 @@ api
       onRowClick,
       rows,
        deletecan() {
-         console.log('working')
+         //console.log('working')
 
          api
         .delete(`analytic/deletecan`, {
