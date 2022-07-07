@@ -18,14 +18,12 @@ export default {
     const { candidate_id,testlog_id, company1_id } = storeToRefs( store_candiate )
     //console.log(token)
     const start = () => {
-      //  $q.loading.show({
-      //     spinner: QSpinnerFacebook,
-      //     spinnerColor: 'yellow',
-      //     spinnerSize: 140,
-      //     backgroundColor: 'purple',
-      //     message: 'Some important process is in progress. Hang on...',
-      //     messageColor: 'black'
-      //   })
+       $q.loading.show({
+          message: 'Loading...pls wait..',
+          boxClass: 'text-white',
+          spinnerColor: 'white',
+          spinnerSize: 60
+        })
         api.post(`analytic/start_test`, {candidate_id : candidate_id.value,company_id : company1_id.value},
         {
   headers: {
@@ -104,7 +102,6 @@ export default {
   width: 100%
   max-width: 350px
   
-
 .note 
   background-color : #e0e0e0
 </style>

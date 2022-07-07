@@ -32,7 +32,7 @@ export default {
     const { candidate_id,company1_id } = storeToRefs( store_candiate )
     //console.log("userinfopage",loggedinname.value)
     const onSubmit = () => {
-         if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
+         if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile || !user.value.ctc || !user.value.pincode) {
           //alert('Invalid')
            //console.log('nooo')
            $q.notify({
@@ -48,10 +48,12 @@ export default {
        }
       else {
         $q.loading.show({
-          message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
-          html: true
+          message: 'Loading...pls wait..',
+          boxClass: 'text-white',
+          spinnerColor: 'white',
+          spinnerSize: 60
         })
-        api.post(`guest/newregister`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile, company_id : company_id.value, timelimit:1200},
+        api.post(`guest/newregister`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile,ctc : user.value.ctc,pincode : user.value.pincode, company_id : company_id.value, timelimit:1200},
         {
   // headers: {
   //   Authorization: 'Bearer ' + token.value
@@ -95,30 +97,22 @@ export default {
 
 <template>
 <div class="page-container window-height row justify-center items-center bg-image" >
-  <div class="q-pa-md row justify-center" style="background-color: white;max-width: 370px; border-radius:25px;" rounded>
-  <div class="col-12 text-center self-center">
-    <h5 class="text-h6 text-uppercase q-my-none" style="font-family:verdana; font-weight: 100;">Enter Your Details</h5>
+  <div id="blueDIV" class="q-pa-md row justify-center" style="background-color: white;max-width: 355px;max-height:465px; border-radius:25px;" rounded>
+  <div id="myDIV" class="col-12 text-center self-center" style="border-radius: 10px;">
+    <h5 class="text-h6 text-uppercase q-my-none" style="color: black;">Enter Your Details</h5>
     
   </div>
     
     <q-form
       @submit="onSubmit"
       @reset="onReset"
-      class="q-gutter-md"
+      class="q-gutter-xm"
     >
       <q-input
         
         v-model="user.name"
         label="Your name "
-        hint="Name and surname"
-        
-        
-        
-        
-        
       />
-
-
 <!-- {
   name : this.name,
   uemail : this.emlil
@@ -150,9 +144,25 @@ export default {
         lazy-rules
         
       />
+      <q-input
+        
+        type="text"
+        v-model="user.ctc"
+        label="Your last CTC"
+        lazy-rules
+        
+      />
+      <q-input
+        
+        type="text"
+        v-model="user.pincode"
+        label="Residence pincode"
+        lazy-rules
+        
+      />
 
       <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
-
+      <br/>
       <div>
         <q-btn  class="full-width bg-cyan-8 text-grey-1" label="Submit" @click="onSubmit()" rounded/>
         <!-- <q-btn label="Start test" @click="goToHome()" color="primary"/> -->
@@ -173,4 +183,16 @@ export default {
     background-repeat: no-repeat;
     background-size: cover;
   }
+
+  #blueDIV {
+  margin:auto;
+  
+  background-color:lightblue;
+  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+}
+#myDIV {
+
+  background-color:#FFFFFF;
+  /* text-shadow: 1px 0px 30px black; */
+}
 </style>

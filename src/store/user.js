@@ -6,6 +6,8 @@ const userDefault = {
     position: '',
     email: '',
     mobile: '',
+    ctc: '',
+    pincode: '',
     company_id: ''
 }
 export const useUserStore = defineStore("user", () => {

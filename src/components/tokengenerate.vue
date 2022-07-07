@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import { useQuasar } from 'quasar'
 import { parse } from '@babel/parser';
 import { now } from 'lodash';
 import { storeToRefs } from 'pinia'
@@ -123,7 +124,7 @@ import moment from 'moment'
   },
     setup () {
       const store = useUserStore()
-      
+      const $q = useQuasar()
       const generatetoken = ref()
       const { token,admin,company_id} = storeToRefs( store )
       const date = ref(moment().format('YYYY-MM-DD HH:mm '))
@@ -135,6 +136,12 @@ import moment from 'moment'
       
      
       const tokengen = () => {
+        $q.loading.show({
+          message: 'Loading...pls wait..',
+          boxClass: 'text-white',
+          spinnerColor: 'white',
+          spinnerSize: 60
+        })
        var abc = Date.parse(date.value)
        var bcd = Date.parse(date1.value)
          //console.log(abc)
@@ -148,6 +155,7 @@ import moment from 'moment'
   }
 }) 
         .then(async (res) => {
+          $q.loading.hide()
         generatetoken.value ="https://fast-citadel-20623.herokuapp.com/token/test/" + res.data.token 
         //  applicant.name.value = generatetoken
          

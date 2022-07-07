@@ -97,13 +97,12 @@ export default {
 //    console.log("array1 contains null value");
 //    alert("attend all the questions and press finish button")
 // } else {
-  //  $q.loading.show({
-  //           spinner: QSpinnerGears,
-  //           spinnerColor: 'red',
-  //           messageColor: 'black',
-  //           backgroundColor: 'yellow',
-  //           message: 'Updated message'
-  //         })
+   $q.loading.show({
+          message: 'Loading...pls wait..',
+          boxClass: 'text-white',
+          spinnerColor: 'white',
+          spinnerSize: 60
+        })
            api.post(`analytic/answer_test`, {candidate_id : candidate_id.value, testlog_id : testlog_id.value,userAnswers: userAnswers.value, timelimit : timelimit.value, timepassed: timelimit.value - timePassed.value  },
         {
   headers: {

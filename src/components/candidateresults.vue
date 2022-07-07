@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { useQuasar } from 'quasar'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '../store/user'
 import { onMounted, ref } from '@vue/runtime-core';
@@ -23,11 +24,18 @@ import { api } from '../boot/axios';
 import { useRouter } from 'vue-router'
 export default {
   setup () {
+    const $q = useQuasar()
     const store = useUserStore()
     const { token,admin} = storeToRefs( store )
     const router = useRouter()
     const rows = ref([])
     onMounted(() => {
+      $q.loading.show({
+          message: 'Loading...pls wait..',
+          boxClass: 'text-white',
+          spinnerColor: 'white',
+          spinnerSize: 60
+        })
       //console.log(token)
 api
           .get(`analytic/getmarks`,
@@ -35,10 +43,9 @@ api
   headers: {
     Authorization: 'Bearer ' + token.value
   }
-})
-          .then(async (res) => {
-            
+}).then(async (res) => {        
   let resdata = res.data.data
+  $q.loading.hide()
   // resdata.forEach(element => {
   //   let pp = 1200
   //  let ab = pp - element.time
@@ -85,6 +92,8 @@ api
 
 
 
+}).catch( (res)=> {
+$q.loading.hide()
 })
 
     })
@@ -106,6 +115,8 @@ api
     { name: 'date', label: 'Date', field: 'date',align: 'center', sortable: true },
     { name: 'email', label: 'Email',align: 'center', field: 'email' },
     { name: 'mobile', label: 'Mobile',align: 'center', field: 'mobile' },
+    { name: 'ctc', label: 'Last CTC',align: 'center', field: 'ctc' },
+    { name: 'pincode', label: 'Pincode',align: 'center', field: 'pincode' },
     
   ]
 

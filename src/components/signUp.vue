@@ -285,12 +285,12 @@
   justify-content:center
 }
 .q-pt-xl {
-    padding-top: 44px;
+    padding-top: 20px;
 }
 
 .q-px-sm {
   width: 335px;
-    padding-left: 73px;
+    padding-left: 33px;
     padding-right: 74px;
 }
 .sign{
@@ -355,6 +355,7 @@ import { api } from '../boot/axios';
 
 export default {
   setup () {
+    
      const arights = computed(() => {
       
       if(admin.value.usertype === 'admin')
@@ -512,6 +513,12 @@ getUserDetails()
   }
   const getUserDetails = () => {
         //console.log(token)
+        $q.loading.show({
+          message: 'Loading...pls wait..',
+          boxClass: 'text-white',
+          spinnerColor: 'white',
+          spinnerSize: 60
+        })
 api
           .get(`user/getuserdetails`,
           {
@@ -520,6 +527,7 @@ api
   }
 })
           .then(async (res) => {
+            $q.loading.hide()
  let resdata = res.data.data
            //console.log(admin) 
            if(admin.value.usertype == 'admin')

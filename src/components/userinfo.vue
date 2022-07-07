@@ -32,7 +32,7 @@ export default {
       }
     })
     const onSubmit = () => {
-         if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile) {
+         if (!user.value.name || !user.value.position || !user.value.email || !user.value.mobile || !user.value.ctc || !user.value.pincode) {
           //alert('Invalid')
            
            $q.notify({
@@ -48,10 +48,10 @@ export default {
        }
       else {
         $q.loading.show({
-          message: 'Some important <b>process</b> is in progress.<br/><span class="text-primary">Hang on...</span>',
+          message: 'pls wait ..',
           html: true
         })
-        api.post(`analytic/insertcandidate`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile, company_id : admin.value.company_id, timelimit:1200},
+        api.post(`analytic/insertcandidate`, {name : user.value.name,position : user.value.position,email : user.value.email,mobile : user.value.mobile,ctc : user.value.ctc,pincode : user.value.pincode, company_id : admin.value.company_id, timelimit:1200},
         {
   headers: {
     Authorization: 'Bearer ' + token.value
@@ -93,7 +93,7 @@ export default {
 
 <template>
 <div class="page-container window-height row justify-center items-center bg-image" >
-  <div id="blueDIV" class="q-pa-md row justify-center" style="background-color: white;max-width: 355px; border-radius:25px" rounded>
+  <div id="blueDIV" class="q-pa-md row justify-center" style="background-color: white;max-width: 355px;max-height:455px; border-radius:25px" rounded>
   <div id="myDIV" class="col-12 text-center self-center" style="border-radius: 10px;">
     <h6 class="text-h6 text-uppercase q-my-none" style="color: black;">Enter Your Details</h6>
     
@@ -102,7 +102,7 @@ export default {
     <q-form
       @submit="onSubmit"
       @reset="onReset"
-      class="q-gutter-md"
+      class="q-gutter-xm"
     >
       <q-input
         
@@ -143,9 +143,24 @@ export default {
         label="Your Mobile No"
         
       />
-
+       <q-input
+        
+        type="text"
+        v-model="user.ctc"
+        label="Your last CTC"
+        lazy-rules
+        
+      />
+      <q-input
+        
+        type="text"
+        v-model="user.pincode"
+        label="Residence pincode"
+        lazy-rules
+        
+      />
       <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
-
+      <br/>
       <div>
         <q-btn  class="full-width bg-primary text-grey-1" label="Submit" @click="onSubmit()" rounded/>
         <!-- <q-btn label="Start test" @click="goToHome()" color="primary"/> -->
