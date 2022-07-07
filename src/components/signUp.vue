@@ -426,7 +426,7 @@ export default {
      Authorization: 'Bearer ' + token.value
    }
       }).then(res => {
-        getUserDetails()
+        getUserDetails();
         console.log(res)
       }) 
       } else {
@@ -453,8 +453,8 @@ const deleteItem = (item) => {
      Authorization: 'Bearer ' + token.value
    }
  }).then((res) => {
-getUserDetails()
- //console.log(res)
+getUserDetails();
+ console.log(res)
  })
  .catch((res) => {
            
@@ -481,8 +481,9 @@ getUserDetails()
      Authorization: 'Bearer ' + token.value
    }
           }).then(async (res) => {
-            getUserDetails()
-           setDefaultValue()
+            getUserDetails();
+           setDefaultValue();
+           
             console.log(res)
 
           }).catch( (res) => {
@@ -500,6 +501,7 @@ getUserDetails()
    }
           }
       ).then((res)=> {
+        getcompdetails();
         console.log(res)
         setcompdefault();
       }).catch((res) => {
