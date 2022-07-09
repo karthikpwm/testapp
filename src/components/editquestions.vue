@@ -1,6 +1,27 @@
 <template>
   <div class="q-pa-md">
-    <q-table
+    <div style="max-width: auto">
+      <q-tabs
+        v-model="tab"
+        align="justify"
+        narrow-indicator
+        class="q-mb-lg"
+      >
+      <q-tab class="text-orange" name="questions" label="questions" />
+      <q-tab class="text-teal" name="category" label="New Category" />
+        
+      </q-tabs>
+      <div class="q-gutter-y-sm" >
+        <q-tab-panels
+          v-model="tab"
+          transition-prev="scale"
+          transition-next="scale"
+          class="bg-white text-white text-center"
+        >
+      
+      <q-tab-panel name="questions">
+            
+      <q-table
       title="List Of Questions"
       :data="resdata"
       :rows="rows"
@@ -63,6 +84,7 @@
             </q-btn></div>
            <!-- <div class="row"><q-input v-model="editedItem.answeralpha" label="answer"></q-input></div> -->
            <div class="row justify-center"  ><q-select style="width: 250px" v-model="additem.answeralpha" :options="answeroptions" label="Answer" emit-value map-options/></div>
+           <div class="row justify-center"  ><q-select style="width: 250px" v-model="additem.category" :options="categoryoptions" label="Category" emit-value map-options/></div>
            <!-- <div class="row"><q-input v-model="editedItem.company_id" label="company"></q-input></div> -->
            <!-- <div class="row justify-center"><q-select style="width: 250px" disable v-model="additem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div> -->
           </q-card-section>
@@ -82,27 +104,27 @@
         <q-tr :props="props">
           <q-td key="question" :props="props">
             {{ props.row.question }}
-            <q-popup-edit v-model="props.row.question" v-slot="scope">
+            <!-- <q-popup-edit v-model="props.row.question" v-slot="scope">
               <q-input type="textarea" v-model="scope.value" dense autofocus  />
-            </q-popup-edit>
+            </q-popup-edit> -->
           </q-td>
           <q-td key="options" :props="props">
             {{ props.row.options }}
-            <q-popup-edit v-model="props.row.options" title="Update Options" buttons v-slot="scope">
+            <!-- <q-popup-edit v-model="props.row.options" title="Update Options" buttons v-slot="scope">
               <q-input v-model="scope.value" dense autofocus />
-            </q-popup-edit>
+            </q-popup-edit> -->
           </q-td>
           <q-td key="answer" :props="props">
             {{ props.row.answeralpha }}
-            <q-popup-edit v-model="props.row.answeralpha" v-slot="scope">
+            <!-- <q-popup-edit v-model="props.row.answeralpha" v-slot="scope">
               <q-input type="textarea" v-model="scope.value" dense autofocus />
-            </q-popup-edit>
+            </q-popup-edit> -->
           </q-td>
           <q-td key="company" :props="props">
             {{ props.row.companynew }}
-            <q-popup-edit v-model="props.row.companynew" title="Update Company" buttons persistent v-slot="scope">
+            <!-- <q-popup-edit v-model="props.row.companynew" title="Update Company" buttons persistent v-slot="scope">
               <q-input type="number" v-model="scope.value" dense autofocus hint="Use buttons to close" />
-            </q-popup-edit>
+            </q-popup-edit> -->
           </q-td>
           <q-td key="actions" :props="props" style="width:131px">
               <q-btn color="blue"  icon="edit"  @click="editItem(props.row)" size=sm no-caps></q-btn>
@@ -115,6 +137,57 @@
         </q-tr>
       </template>
     </q-table>
+          </q-tab-panel>
+          </q-tab-panels>
+          <q-tab-panels
+          v-model="tab"
+          animated
+          transition-prev="fade"
+          transition-next="fade"
+          class="bg-white text-black text-center"
+        >
+        <q-tab-panel name="category">
+          <q-table
+      title="categories"
+      :data="resdata"
+      :rows="rows1"
+      auto-width
+      wrap-cells
+      :columns="columns"
+      row-key="question"
+      binary-state-sort
+      :rows-per-page-options="[10]"
+    >
+            <template v-slot:top>
+             <q-btn dense color="primary" label="Add new Category" @click="show_dialog2 = !show_dialog2" no-caps></q-btn>{{categoryname}}
+             <div class="q-pa-md q-gutter-md">
+                <q-dialog v-model="show_dialog2">
+        <q-card>
+          <q-card-section style="width: 523px">
+            <div class="text-h6">Category</div>
+          </q-card-section>
+
+          <q-card-section style="width: 421px">
+            <div class="row" style="width: 400px">
+              <q-input v-model="categoryname" autogrow label="Category Name" style="width: 200px"></q-input>
+              </div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="SAVE" color="primary" v-close-popup @click="addCategory()" ></q-btn>
+          </q-card-actions>
+          </q-card>
+    </q-dialog>
+             </div>
+            </template>
+           
+          </q-table>
+
+          </q-tab-panel>
+          </q-tab-panels>
+          
+          </div>
+    </div>
+    
   </div>
 </template>
 
@@ -145,7 +218,10 @@ export default {
     const router = useRouter()
     var show_dialog = ref(false)
     var show_dialog1 = ref(false)
+    var show_dialog2 = ref(false)
     var editedIndex = ref(-1)
+    var categoryname = ref()
+    const categoryoptions = ref([])
     const finds = ref({})
     const numberToChar = (number) => {
       if(number === null) {
@@ -162,7 +238,8 @@ export default {
         answer: '',
         answeralpha: '',
         company_id: '',
-        companynew : ''
+        companynew : '',
+        category: ''
       }])
     var additem = ref([ {
         question: '',
@@ -170,7 +247,8 @@ export default {
         answer: '',
         answeralpha: '',
         company_id: '',
-        companynew : ''
+        companynew : '',
+        category: ''
       }])
       const defaultItem = ref({
         question: '',
@@ -231,7 +309,7 @@ export default {
 
     }
      onMounted(() => {
-      
+      getcategorydetails();
       getQuestion();      
       //console.log(token)
   })
@@ -332,7 +410,7 @@ const addRow = () => {
 })
 .catch((res) => {
             
-            //console.log(res)
+            console.log(res)
             
           })
     }
@@ -384,6 +462,40 @@ const close = () => {
         this.editedIndex = -1
       }, 300)
 }
+const addCategory = () => {
+  api.post('user/addcategory',{category : categoryname.value, company_id : admin.value.company_id,}
+  ).then(res => {
+    console.log(res)
+  }).catch(err => {
+    console.log(err)
+  })
+  console.log(categoryname.value)
+} 
+const getcategorydetails = () => {
+    api.get("user/getcompdetails",
+    {
+  headers: {
+    Authorization: 'Bearer ' + token.value
+  }
+})
+      .then(res => {
+        categoryoptions.value = res.data.data.map((x) => { 
+        
+        return {'label' : x.name, 'value' : x.company_id }
+      })
+        //allcompdet.value = res.data.data
+       //company.value = allcompdet.value
+//         var inner = res.data.data.map(function(e) {
+//   return e;
+// });
+
+//     //console.log(inner);
+//     company.value = inner
+//         console.log(company.value)
+      }).catch((res) => {
+        //console.log(res)
+      })
+  }
 const columns = [
   {
     name: 'question',
@@ -404,8 +516,11 @@ const columns = [
         }
 ]
 return {
+  tab: ref('questions'),
   show_dialog,
   show_dialog1,
+  show_dialog2,
+  categoryname,
   columns,
   rows,
   addRow,
@@ -423,6 +538,9 @@ return {
   finds,
   addnewitem,
   clearinputvalue,
+  addCategory,
+  getcategorydetails,
+  categoryoptions,
   answeroptions: [
         {
           label: 'A',

@@ -69,7 +69,7 @@
                Edit Questions
               </q-item-section>
             </q-item>
-            <q-item clickable v-if="!arights" v-ripple to="/user">
+            <!-- <q-item clickable v-if="!arights" v-ripple to="/user">
               <q-item-section avatar>
                 <q-icon name="drafts" />
               </q-item-section>
@@ -77,14 +77,14 @@
               <q-item-section>
                Start Test
               </q-item-section>
-            </q-item>
+            </q-item> -->
             <q-item clickable v-ripple to="/signup">
               <q-item-section avatar>
                 <q-icon name="drafts" />
               </q-item-section>
 
               <q-item-section>
-               User Account
+               Manage Account
               </q-item-section>
             </q-item>
           </q-list>

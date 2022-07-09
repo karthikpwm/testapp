@@ -7,9 +7,9 @@
         narrow-indicator
         class="q-mb-lg"
       >
-      <q-tab class="text-orange" name="alarms" label="Manage Accounts" />
-      <q-tab class="text-red" name="comp" label="New Company" />
-        <q-tab class="text-purple" name="mails" label="Sign Up" />
+      <q-tab class="text-orange" name="alarms" label="Accounts Info" />
+      <q-tab v-if="arights" class="text-red" name="comp" label="New Company" />
+        <q-tab v-if="arights" class="text-purple" name="mails" label="Sign Up" />
       </q-tabs>
 
       <div class="q-gutter-y-sm" >
