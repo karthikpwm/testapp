@@ -81,6 +81,7 @@ api
        
       val.timetaken = `${minutes}:${seconds}`;
          //console.log('sum',val.timetaken,resdata)
+         console.log(admin.value.company_id)
          var result = resdata.filter(obj=> obj.company_id == admin.value.company_id);
  //console.log(result);
         rows.value = result
