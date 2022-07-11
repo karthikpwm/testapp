@@ -86,7 +86,7 @@ api
         rows.value = result
      }
          })
-         //console.log(rows.value)
+         console.log(rows.value)
     //rows.value = resdata
 
 
