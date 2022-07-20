@@ -88,7 +88,7 @@ export default {
          
           
             //$q.loading.hide()
-            //console.log(res)
+            console.log(res)
             
           })
      }
