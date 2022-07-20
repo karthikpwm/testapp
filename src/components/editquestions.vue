@@ -8,7 +8,7 @@
         class="q-mb-lg"
       >
       <q-tab class="text-orange" name="questions" label="questions" />
-      <q-tab class="text-teal" name="category" label="New Category" />
+      <!-- <q-tab class="text-teal" name="category" label="New Category" /> -->
         
       </q-tabs>
       <div class="q-gutter-y-sm" >
@@ -84,7 +84,7 @@
             </q-btn></div>
            <!-- <div class="row"><q-input v-model="editedItem.answeralpha" label="answer"></q-input></div> -->
            <div class="row justify-center"  ><q-select style="width: 250px" v-model="additem.answeralpha" :options="answeroptions" label="Answer" emit-value map-options/></div>
-           <div class="row justify-center"  ><q-select style="width: 250px" v-model="additem.category" :options="categoryoptions" label="Category" emit-value map-options/></div>
+           <div class="row justify-center"  ><q-select style="width: 250px" v-model="additem.category" :options="categoryoptions" label="Company" emit-value map-options/></div>
            <!-- <div class="row"><q-input v-model="editedItem.company_id" label="company"></q-input></div> -->
            <!-- <div class="row justify-center"><q-select style="width: 250px" disable v-model="additem.companynew" :options="companyoptions" label="Company" emit-value map-options/></div> -->
           </q-card-section>
@@ -480,7 +480,8 @@ const getcategorydetails = () => {
   }
 })
       .then(res => {
-        categoryoptions.value = res.data.data.map((x) => { 
+        var result = res.data.data.filter(obj => obj.company_id == admin.value.company_id);
+        categoryoptions.value = result.map((x) => { 
         
         return {'label' : x.name, 'value' : x.company_id }
       })
