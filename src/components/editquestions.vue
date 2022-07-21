@@ -389,7 +389,7 @@ const addRow = () => {
      let ab = finds.value.options
      let up =  ab.lastIndexOf("")
      //console.log(up)
-      if( additem.value.question != '' && up == -1 && additem.value.answeralpha != '' )
+      if( additem.value.question != '' && up == -1 && ab.length !== 0 && additem.value.answeralpha != '' && additem.value.answeralpha != undefined && additem.value.category != undefined && additem.value.category !='' )
       {
    
    
